@@ -1,69 +1,79 @@
-import React from 'react';
-import axios from 'axios';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import CommentBoard from '@/component/CommentBoard';
-import { MongoClient, Db } from 'mongodb';
 import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 interface PageProps {
   params: {
-    _id: string;
+    id: string;
   };
 }
 
 interface CommentBoardData {
+  _id: string;
   title: string;
   description: string;
   imageUrl: string;
 }
 
-const CommentBoardPage: React.FC<PageProps> = async ({ params }) => {
-  let client: MongoClient | null = null;
-  let db: Db | null = null;
+interface Comment {
+  _id: string;
+  message: string;
+  createdAt: string;
+}
 
-  try {
-    // 獲取評論板數據
-    const response = await axios.get(`mongodb://localhost:27017/MessageBoard/messages`);
-    if (!response.data) {
-      throw new Error("Comment board not found");
-    }
-    const commentBoardData = response.data as CommentBoardData;
+const CommentBoardPage: React.FC<PageProps> = ({ params }) => {
+  const [commentBoardData, setCommentBoardData] = useState<CommentBoardData | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-    // 連接到 MongoDB
-    const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-    client = await MongoClient.connect(MONGODB_URI);
-    db = client.db('MessageBoard');
-
-    // 處理新增留言的函數
-    const addMessage = async (message: string) => {
-      if (!db) throw new Error("Database connection not established");
-      const messagesCollection = db.collection('messages');
-      await messagesCollection.insertOne({
-        cardId: params._id,
-        message,
-        createdAt: new Date()
-      });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [boardResponse, commentsResponse] = await Promise.all([
+          axios.get(`/api/commentBoard/${params.id}`),
+          axios.get(`/api/comments/${params.id}`)
+        ]);
+        setCommentBoardData(boardResponse.data);
+        setComments(commentsResponse.data);
+      } catch (err) {
+        setError('Failed to fetch data');
+        console.error(err);
+      }
     };
 
-    return (
-      <div className="container mx-auto p-4">
-        <CommentBoard
-          id={params._id}
-          title={commentBoardData.title}
-          description={commentBoardData.description}
-          imageUrl={commentBoardData.imageUrl}
-          onAddMessage={addMessage}
-        />
-        <Button>新增留言</Button>
-      </div>
-    );
-  } catch (error) {
-    console.error("Error:", error);
-    return <div>Error: {error instanceof Error ? error.message : String(error)}</div>;
-  } finally {
-    if (client) {
-      await client.close();
+    fetchData();
+  }, [params.id]);
+
+  const addMessage = async (message: string) => {
+    try {
+      const response = await axios.post(`/api/comments/${params.id}`, { message });
+      setComments(prevComments => [...prevComments, response.data]);
+    } catch (err) {
+      console.error('Failed to add comment:', err);
     }
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
+
+  if (!commentBoardData) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="container mx-auto p-4">
+      <CommentBoard
+        title={commentBoardData.title}
+        description={commentBoardData.description}
+        imageUrl={commentBoardData.imageUrl}
+      />
+      <Button onClick={() => addMessage('New comment')}>新增留言</Button>
+    </div>
+  );
 };
 
 export default CommentBoardPage;
