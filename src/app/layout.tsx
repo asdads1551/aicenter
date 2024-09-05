@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils"
 import "./globals.css";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
-import AuthProvider from '@/providers/auth-provider'
 import Categories from "@/component/Categories";
 import { NextAuthOptions } from "next-auth"
 <link rel="icon" href="/favicon.ico" sizes="any" />
