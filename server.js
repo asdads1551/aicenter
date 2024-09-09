@@ -10,8 +10,11 @@ app.use(cors());
 app.use(express.json());
 
 // 連接到 MongoDB
-mongoose.connect('mongodb://localhost:27017/AIcardDB', {
+mongoose.connect('mongodb://mongo:k9V4RvQIUz8uobC2Sj0p16JAe57TLgs3@hkg1.clusters.zeabur.com:31399', {
 });
+
+/* mongoose.connect('mongodb://localhost:27017/AIcardDB', {
+}); */
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
