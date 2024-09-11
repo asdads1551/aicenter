@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { ObjectId } from 'mongodb';
 
 interface CardType {
-  _id: ObjectId;
+  _id: string; // 改為 string 類型
   title: string;
   footer: string;
   description: string;
@@ -25,7 +25,8 @@ interface CardType {
 
 const fetchCards = async (): Promise<CardType[]> => {
   try {
-    const response = await axios.get('https://aicenter.tw');
+    // 修改 API URL，確保它指向正確的端點
+    const response = await axios.get('https://aicenter.tw/api/cards');
     return response.data;
   } catch (error) {
     console.error('Error fetching cards:', error);
@@ -35,7 +36,7 @@ const fetchCards = async (): Promise<CardType[]> => {
 
 const CardItem: React.FC<{ card: CardType }> = ({ card }) => {
   return (
-    <Link href={`/card/comments/${card._id.toString()}`} passHref>
+    <Link href={`/card/comments/${card._id}`} passHref>
       <Card className="w-full max-w-sm overflow-hidden cursor-pointer transition-shadow duration-300 hover:shadow-lg">
         <div className="relative">
           <img 
@@ -110,7 +111,7 @@ const CardDisplay = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredCards.map(card => (
-            <CardItem key={card._id.toString()} card={card} />
+            <CardItem key={card._id} card={card} />
           ))}
         </div>
       )}
