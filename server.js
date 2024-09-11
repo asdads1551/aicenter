@@ -6,7 +6,10 @@ const app = express();
 const port = 5002;
 
 // 使用 CORS 和 JSON 解析中間件
-app.use(cors());
+app.use(cors({
+  origin: 'https://aicenter.tw',
+  credentials: true
+}));
 app.use(express.json());
 
 // 連接到 MongoDB
