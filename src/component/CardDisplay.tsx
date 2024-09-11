@@ -25,7 +25,7 @@ interface CardType {
 
 const fetchCards = async (): Promise<CardType[]> => {
   try {
-    const response = await axios.get('http://localhost:5002/cards');
+    const response = await axios.get('https://aicenter.tw');
     return response.data;
   } catch (error) {
     console.error('Error fetching cards:', error);
