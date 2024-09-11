@@ -7,7 +7,7 @@ const port = 5002;
 
 // 使用 CORS 和 JSON 解析中間件
 app.use(cors({
-  origin: 'https://aicenter.tw',
+  origin: ['https://aicenter.tw', 'http://localhost:3000'], // 添加您的前端域名
   credentials: true
 }));
 app.use(express.json());
@@ -35,7 +35,7 @@ const AIcardSchema = new mongoose.Schema({
 const AIcard = mongoose.model('AIcard', AIcardSchema);
 
 // 路由：獲取所有 AIcard
-app.get('/cards', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const cards = await AIcard.find();
     res.json(cards);
