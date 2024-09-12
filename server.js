@@ -37,37 +37,26 @@ const AIcard = mongoose.model('AIcard', AIcardSchema);
 // 路由：獲取所有 AIcard
 app.get('/cards', async (req, res) => {
   try {
-    const cards = await AIcard.find().lean();
-    // 確保 _id 被轉換為字符串
-    const formattedCards = cards.map(card => ({
-      ...card,
-      _id: card._id.toString()
-    }));
-    res.json(formattedCards);
+    const cards = await AIcard.find();
+    res.json(cards);
   } catch (err) {
-    console.error('Error fetching cards:', err);
-    res.status(500).json({ message: 'Internal server error', error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
 // 路由：創建新 AIcard
 app.post('/cards', async (req, res) => {
-  const { name, email } = req.body;
+  const { name, category, imageUrl, shareCount, viewCount, savedCount } = req.body;
 
   const newCard = new AIcard({
-    name,
-    email
+    name
   });
 
   try {
     const savedCard = await newCard.save();
-    res.status(201).json({
-      ...savedCard.toObject(),
-      _id: savedCard._id.toString()
-    });
+    res.status(201).json(savedCard);
   } catch (err) {
-    console.error('Error creating card:', err);
-    res.status(400).json({ message: 'Error creating card', error: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 
