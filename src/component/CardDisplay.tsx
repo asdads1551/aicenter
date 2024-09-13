@@ -82,6 +82,9 @@ const CardDisplay = () => {
       try {
         setIsLoading(true);
         const data = await fetchCards();
+        if (!Array.isArray(data)) {
+          throw new Error('Received invalid data format');
+        }
         setCards(data);
         setFilteredCards(data);
       } catch (err) {
@@ -94,13 +97,12 @@ const CardDisplay = () => {
     loadCards();
   }, []);
 
-  const handleSelectCategory = (category: string) => {
-    const filtered = cards.filter(card => card.category === category);
-    setFilteredCards(filtered);
-  };
+  if (isLoading) return <div>載入中...</div>;
+  if (error) return <div>錯誤: {error}</div>;
 
-  if (isLoading) return <div>加載中...</div>;
-  if (error) return <div>{error}</div>;
+  function handleSelectCategory(category: string): void {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <div className="p-4">
