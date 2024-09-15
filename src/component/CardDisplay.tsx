@@ -26,7 +26,7 @@ interface CardType {
 const fetchCards = async (): Promise<CardType[]> => {
   try {
     // 修改 API URL，確保它指向正確的端點
-    const response = await axios.get('https://aicenter.tw');
+    const response = await axios.get('');
     return response.data;
   } catch (error) {
     console.error('Error fetching cards:', error);
@@ -82,6 +82,7 @@ const CardDisplay = () => {
       try {
         setIsLoading(true);
         const data = await fetchCards();
+        console.log('Fetched cards:', data); // 添加這行來查看獲取的數據
         if (!Array.isArray(data)) {
           throw new Error('Received invalid data format');
         }
