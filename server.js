@@ -13,7 +13,7 @@ app.use(cors({
 app.use(express.json());
 
 // 連接到 MongoDB
-mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+mongoose.connect(process.env.MONGODB_URI, {
 });
 
 
