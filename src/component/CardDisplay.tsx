@@ -25,8 +25,7 @@ interface CardType {
 
 const fetchCards = async (): Promise<CardType[]> => {
   try {
-    // 修改 API URL，指向 AI Center 的卡片 API
-    const response = await axios.get('https://aicenter.tw/api/cards');
+    const response = await axios.get('/api/cards');
     return response.data;
   } catch (error) {
     console.error('Error fetching cards:', error);
