@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import { getCards, createCard, updateCard, deleteCard } from './src/app/api/cards';
 
 const app = express();
 const port = 5002;
@@ -33,52 +34,16 @@ const AIcardSchema = new mongoose.Schema({
 const AIcard = mongoose.model('AIcard', AIcardSchema);
 
 // 路由：獲取所有 AIcard
-app.get('/api/cards', async (req, res) => {
-  try {
-    const cards = await AIcard.find();
-    res.json(cards);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+app.get('/api/cards', getCards);
 
 // 路由：創建新 AIcard
-app.post('/api/cards', async (req, res) => {
-  const { name, category, imageUrl, shareCount, viewCount, savedCount } = req.body;
-
-  const newCard = new AIcard({
-    name
-  });
-
-  try {
-    const savedCard = await newCard.save();
-    res.status(201).json(savedCard);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+app.post('/api/cards', createCard);
 
 // 路由：更新 AIcard
-app.patch('/api/cards/:id', async (req, res) => {
-  try {
-    const updatedCard = await AIcard.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedCard) return res.status(404).json({ message: 'Card not found' });
-    res.json(updatedCard);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+app.patch('/api/cards/:id', updateCard);
 
 // 路由：刪除 AIcard
-app.delete('/api/cards/:id', async (req, res) => {
-  try {
-    const result = await AIcard.findByIdAndDelete(req.params.id);
-    if (!result) return res.status(404).json({ message: 'Card not found' });
-    res.json({ message: 'Card deleted successfully' });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+app.delete('/api/cards/:id', deleteCard);
 
 // 啟動伺服器
 app.listen(port, () => {
