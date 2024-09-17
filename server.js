@@ -33,7 +33,7 @@ const AIcardSchema = new mongoose.Schema({
 const AIcard = mongoose.model('AIcard', AIcardSchema);
 
 // 路由：獲取所有 AIcard
-app.get('/cards', async (req, res) => {
+app.get('/api/cards', async (req, res) => {
   try {
     const cards = await AIcard.find();
     res.json(cards);
@@ -43,7 +43,7 @@ app.get('/cards', async (req, res) => {
 });
 
 // 路由：創建新 AIcard
-app.post('/cards', async (req, res) => {
+app.post('/api/cards', async (req, res) => {
   const { name, category, imageUrl, shareCount, viewCount, savedCount } = req.body;
 
   const newCard = new AIcard({
@@ -59,7 +59,7 @@ app.post('/cards', async (req, res) => {
 });
 
 // 路由：更新 AIcard
-app.patch('/cards/:id', async (req, res) => {
+app.patch('/api/cards/:id', async (req, res) => {
   try {
     const updatedCard = await AIcard.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedCard) return res.status(404).json({ message: 'Card not found' });
@@ -70,7 +70,7 @@ app.patch('/cards/:id', async (req, res) => {
 });
 
 // 路由：刪除 AIcard
-app.delete('/cards/:id', async (req, res) => {
+app.delete('/api/cards/:id', async (req, res) => {
   try {
     const result = await AIcard.findByIdAndDelete(req.params.id);
     if (!result) return res.status(404).json({ message: 'Card not found' });
