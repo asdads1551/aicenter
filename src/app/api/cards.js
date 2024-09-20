@@ -1,54 +1,67 @@
-import { AIcard } from '../../models/AIcard';
-import Cors from 'cors';
+import { AIcard } from '../../../models/AIcard';
+import { NextResponse } from 'next/server';
 
-// 初始化 CORS 中間件
-const cors = Cors({
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  origin: 'https://aicenter.tw', // 允許的域名
-  optionsSuccessStatus: 200, // 一些舊版瀏覽器 (IE11, various SmartTVs) 在 204 上卡住
-});
+// CORS 配置
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://aicenter.tw',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
 
-// CORS 中間件包裝函數
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export default async function handler(req, res) {
-  // 運行 CORS 中間件
-  await runMiddleware(req, res, cors);
+export async function GET() {
+  try {
+    const cards = await AIcard.find();
+    return NextResponse.json(cards, { headers: corsHeaders });
+  } catch (err) {
+    return NextResponse.json({ message: err.message }, { status: 500, headers: corsHeaders });
+  }
+}
 
-  // 根據 HTTP 方法處理請求
-  switch (req.method) {
-    case 'GET':
-      try {
-        const cards = await AIcard.find();
-        res.status(200).json(cards);
-      } catch (err) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
+export async function POST(request) {
+  const { name } = await request.json();
 
-    case 'POST':
-      // POST 處理邏輯
-      break;
+  const newCard = new AIcard({
+    name
+    // 添加其他字段如果需要
+  });
 
-    case 'PATCH':
-      // PATCH 處理邏輯
-      break;
+  try {
+    const savedCard = await newCard.save();
+    return NextResponse.json(savedCard, { status: 201, headers: corsHeaders });
+  } catch (err) {
+    return NextResponse.json({ message: err.message }, { status: 400, headers: corsHeaders });
+  }
+}
 
-    case 'DELETE':
-      // DELETE 處理邏輯
-      break;
+export async function PATCH(request) {
+  const { id } = request.query;
+  const updateData = await request.json();
 
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'PATCH', 'DELETE']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+  try {
+    const updatedCard = await AIcard.findByIdAndUpdate(id, updateData, { new: true });
+    if (!updatedCard) {
+      return NextResponse.json({ message: 'Card not found' }, { status: 404, headers: corsHeaders });
+    }
+    return NextResponse.json(updatedCard, { headers: corsHeaders });
+  } catch (err) {
+    return NextResponse.json({ message: err.message }, { status: 400, headers: corsHeaders });
+  }
+}
+
+export async function DELETE(request) {
+  const { id } = request.query;
+
+  try {
+    const result = await AIcard.findByIdAndDelete(id);
+    if (!result) {
+      return NextResponse.json({ message: 'Card not found' }, { status: 404, headers: corsHeaders });
+    }
+    return NextResponse.json({ message: 'Card deleted successfully' }, { headers: corsHeaders });
+  } catch (err) {
+    return NextResponse.json({ message: err.message }, { status: 400, headers: corsHeaders });
   }
 }
