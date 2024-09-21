@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import { getCards, createCard, updateCard, deleteCard } from './src/app/api/cards';
+import { getCards, createCard, updateCard, deleteCard } from './src/app/api/cards/route';
 
 const app = express();
 const port = 5002;
