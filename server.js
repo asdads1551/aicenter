@@ -31,7 +31,7 @@ const AIcardSchema = new mongoose.Schema({
 });
 
 // 創建 AIcard 模型
-const AIcard = mongoose.model('AIcard', AIcardSchema);
+export const AIcard = mongoose.model('AIcard', AIcardSchema);
 
 // 路由：獲取所有 AIcard
 app.get('/api/cards', getCards);
