@@ -1,4 +1,4 @@
-import { AIcard } from '../../../models/AIcard';
+import { AIcard } from '../../../../models/AIcard';
 import { NextResponse } from 'next/server';
 
 // CORS 配置
@@ -38,7 +38,8 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
-  const { id } = request.query;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
   const updateData = await request.json();
 
   try {
@@ -53,7 +54,8 @@ export async function PATCH(request) {
 }
 
 export async function DELETE(request) {
-  const { id } = request.query;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
 
   try {
     const result = await AIcard.findByIdAndDelete(id);
