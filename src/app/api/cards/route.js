@@ -1,4 +1,4 @@
-import { AIcard } from '@/models/AIcard';
+import { AIcard } from '../../../../models/AIcard';
 import { NextResponse } from 'next/server';
 
 // CORS 配置
