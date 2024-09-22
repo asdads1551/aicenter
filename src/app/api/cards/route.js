@@ -8,18 +8,20 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-// 添加這個簡單的 GET 處理程序
-export async function GET(request) {
-  console.log('Simple GET /api/cards route hit');
-  return NextResponse.json({ message: 'API is working' }, { status: 200, headers: corsHeaders });
-}
-
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function GET() {
+export async function GET(request) {
   console.log('GET /api/cards route hit');
+  
+  // 檢查是否有特定的查詢參數來觸發簡單的響應
+  const { searchParams } = new URL(request.url);
+  if (searchParams.get('check') === 'api') {
+    console.log('Simple GET /api/cards route hit');
+    return NextResponse.json({ message: 'API is working' }, { status: 200, headers: corsHeaders });
+  }
+
   try {
     const cards = await AIcard.find();
     console.log('Cards fetched:', cards);
