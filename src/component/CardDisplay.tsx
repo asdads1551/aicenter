@@ -25,11 +25,15 @@ interface CardType {
 
 const fetchCards = async (): Promise<CardType[]> => {
   try {
-    const response = await axios.get('https://aicenter.tw/api/cards');
+    const response = await axios.get('/api/cards');  // 修改 API 端點
     return response.data;
   } catch (error) {
     console.error('Error fetching cards:', error);
-    throw error;
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(`Failed to fetch cards: ${error.response.status} ${error.response.statusText}`);
+    } else {
+      throw new Error('An unexpected error occurred while fetching cards');
+    }
   }
 };
 
@@ -81,7 +85,7 @@ const CardDisplay = () => {
       try {
         setIsLoading(true);
         const data = await fetchCards();
-        console.log('Fetched cards:', data); // 添加這行來查看獲取的數據
+        console.log('Fetched cards:', data);
         if (!Array.isArray(data)) {
           throw new Error('Received invalid data format');
         }
@@ -89,7 +93,7 @@ const CardDisplay = () => {
         setFilteredCards(data);
       } catch (err) {
         console.error('Error loading cards:', err);
-        setError('載入卡片數據時出錯');
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
