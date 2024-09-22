@@ -13,10 +13,13 @@ export async function OPTIONS() {
 }
 
 export async function GET() {
+  console.log('GET /api/cards route hit');
   try {
     const cards = await AIcard.find();
+    console.log('Cards fetched:', cards);
     return NextResponse.json(cards, { headers: corsHeaders });
   } catch (err) {
+    console.error('Error in GET /api/cards:', err);
     return NextResponse.json({ message: err.message }, { status: 500, headers: corsHeaders });
   }
 }
