@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
-import { AIcard } from '../../../models/AIcard.js';
+import { AIcard } from '../../../models/AIcard';
 
 // CORS 配置
 const corsHeaders = {
