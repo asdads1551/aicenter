@@ -3,11 +3,9 @@ import { Inter as FontSans } from "next/font/google"
 import { Inter  } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "./globals.css";
-import Navbar from "../component/Navbar";
-import Footer from "../component/Footer";
-import Categories from "@/component/Categories";
+import Navbar from "@/components/Navbar";  // 確保這行正確
+import Footer from "../components/Footer";
 import { NextAuthOptions } from "next-auth"
-<link rel="icon" href="/favicon.ico" sizes="any" />
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +17,7 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "AI center",
   icons: {
-    icon: '/favicon.ico', // 相對於app目錄的路徑
+    icon: '/favicon.ico',
   },
   description: "集結了所有AI有關的任何工具與資訊, 更公開透明的了解AI工具的好與壞",
 };
