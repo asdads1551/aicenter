@@ -1,12 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, MessageSquare, Share2, Bookmark, X } from 'lucide-react';
 import Link from 'next/link';
 import { FacebookIcon, TwitterIcon } from 'lucide-react';
 import { LinkIcon } from 'lucide-react';
+
+interface Tool {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  overview: string;
+  content: string;
+  url: string;
+  commentCount: number;
+  likeCount: number;
+}
 
 interface CardWithDisplayProps {
   _id: string;
@@ -89,6 +100,28 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [isLiked, setIsLiked] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [tools, setTools] = useState<Tool[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTools = async () => {
+      try {
+        const response = await fetch('https://api.aicenter.tw/tool');
+        if (!response.ok) {
+          throw new Error('Failed to fetch tools');
+        }
+        const data = await response.json();
+        setTools(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTools();
+  }, []);
 
   const handleLike = () => {
     if (!isLoggedIn) {
