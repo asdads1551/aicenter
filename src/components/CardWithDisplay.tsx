@@ -144,61 +144,59 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
     }
     console.log('Save clicked');
   };
-
-  // 使用 title 創建路徑，將標題轉換為 URL 友好的格式
-  const toolPath = `/tool/${encodeURIComponent(title.toLowerCase().replace(/ /g, '-'))}`;
+  const toolPath = `/tool-review?toolId=${_id}`;
 
   return (
     <>
-      <div className="w-full max-w-2xl mx-auto p-4">
-        <Card className="bg-white rounded-3xl overflow-hidden relative transition-all duration-300 border-none
-          shadow-[0_2px_8px_rgba(0,0,0,0.04),0_16px_24px_rgba(0,0,0,0.08)]
+      <div className="w-full max-w-[280px] mx-auto p-1">
+        <Card className="bg-white rounded-2xl overflow-hidden relative transition-all duration-300 border-none
+          shadow-[0_1px_4px_rgba(0,0,0,0.02),0_8px_16px_rgba(0,0,0,0.06)]
           hover:shadow-[0_2px_8px_rgba(0,0,0,0.04),0_16px_32px_rgba(0,0,0,0.12)]
           after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 
-          after:h-[6px] after:bg-gradient-to-r after:from-blue-500 after:to-blue-400 
-          after:rounded-b-3xl">
+          after:h-[4px] after:bg-gradient-to-r after:from-blue-500 after:to-blue-400 
+          after:rounded-b-2xl">
           <Link href={toolPath} className="block">
             <CardContent className="p-0">
-              <div className="bg-slate-100 h-56 flex items-center justify-center">
+              <div className="bg-slate-100 h-36 flex items-center justify-center">
                 <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
               </div>
-              <div className="p-6 pb-20">
-                <h3 className="text-2xl font-bold mb-3">{title}</h3>
-                <p className="text-base text-gray-600 mb-5">{description}</p>
-                <div className="flex space-x-3">
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100">影片剪輯</Button>
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100">免費</Button>
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100">中文</Button>
+              <div className="p-3 pb-14">
+                <h3 className="text-base font-bold mb-1">{title}</h3>
+                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{description}</p>
+                <div className="flex flex-wrap gap-1">
+                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">影片剪輯</Button>
+                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">免費</Button>
+                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">中文</Button>
                 </div>
               </div>
             </CardContent>
           </Link>
           <div className="absolute bottom-0 left-0 right-0 bg-white">
             <hr className="border-gray-100" />
-            <div className="flex items-center justify-between text-base text-gray-500 p-5">
-              <div className="flex items-center space-x-6">
+            <div className="flex items-center justify-between text-base text-gray-500 p-3">
+              <div className="flex items-center space-x-4">
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   className={`p-0 flex items-center hover:bg-transparent ${isLiked ? 'text-red-500' : 'text-gray-500'}`} 
                   onClick={handleLike}
                 >
-                  <Heart className="w-6 h-6 mr-2" fill={isLiked ? "currentColor" : "none"} />
-                  <span className="text-lg">{saveCount}</span>
+                  <Heart className="w-4 h-4 mr-1" fill={isLiked ? "currentColor" : "none"} />
+                  <span className="text-sm">{saveCount}</span>
                 </Button>
                 <div className="flex items-center">
-                  <MessageSquare className="w-6 h-6 mr-2" />
-                  <span className="text-lg">{commentCount}</span>
+                  <MessageSquare className="w-4 h-4 mr-1" />
+                  <span className="text-sm">{commentCount}</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   className="p-0 hover:bg-transparent" 
                   onClick={() => setIsShareModalOpen(true)}
                 >
-                  <Share2 className="w-6 h-6" />
+                  <Share2 className="w-4 h-4" />
                 </Button>
                 <Button 
                   variant="ghost" 
@@ -206,7 +204,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
                   className="p-0 hover:bg-transparent" 
                   onClick={handleBookmark}
                 >
-                  <Bookmark className="w-6 h-6" />
+                  <Bookmark className="w-4 h-4" />
                 </Button>
               </div>
             </div>
