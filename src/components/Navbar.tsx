@@ -22,7 +22,6 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { href: '/', label: '首頁' },
     { href: '/categories', label: '分類' },
     { href: '/filter', label: '條件篩選' },
   ];
