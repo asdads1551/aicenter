@@ -50,7 +50,7 @@ export default function RootLayout({
           }
         }}>
           <Navbar />
-          <main className="px-[14px] sm:px-0 max-w-7xl w-[100%] mx-auto" style={{ flexGrow: 1 }}>
+          <main className="px-[14px] sm:px-[24px] lg:px-0 max-w-7xl w-[100%] mx-auto" style={{ flexGrow: 1 }}>
             {children}
           </main>
           <Footer />

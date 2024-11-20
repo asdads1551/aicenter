@@ -7,6 +7,7 @@ import card from "antd/es/card";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 import CardWithDisplay from "../CardWithDisplay";
+import { DownOutlined } from '@ant-design/icons';
 
 export type CategoryPageProps = {
     categories: Category[]
@@ -47,7 +48,7 @@ const CategoryPage = (props: {
     const dropDownItems: MenuProps['items'] = categoryTree.map(tree => ({
         key: tree._id,
         label: (
-            <a className={`pl-[16px] leading-[30px] text-[14px] w-full ${activeCategoryId === tree._id? 'bg-[#EEF4FE]': ''}`} href={`/categories/${tree._id}`}>
+            <a className={`pl-[16px] leading-[30px] text-[14px] w-full ${activeCategoryId === tree._id ? 'bg-[#EEF4FE]' : ''}`} href={`/categories/${tree._id}`}>
                 {tree.name}
             </a>
         ),
@@ -74,15 +75,16 @@ const CategoryPage = (props: {
 
     const category = activeCategoryId ? categoryMap.get(activeCategoryId) : null;
     return (
-        <div className="flex flex-col sm:flex-row mt-[14px] sm:mt-[40px] mb-[40px] sm:mb-[100px]">
+        <div className="flex flex-col sm:flex-row mt-[14px] sm:mt-[24px] lg:mt-[40px] mb-[40px] sm:mb-[100px]">
             <div className="flex sm:hidden w-100">
                 <Dropdown menu={{ items: dropDownItems }} placement="bottom">
                     <Button type="primary" className="w-full justify-start h-[38px]">
-                        <span className="text-[14px] text-500">{"分類" + (category ? '：' + category?.name : '')}</span>
+                        <span className="text-[14px] text-500 mr-auto">{"分類" + (category ? '：' + category?.name : '')}</span>
+                        <DownOutlined />
                     </Button>
                 </Dropdown>
             </div>
-            <div className="hidden sm:flex min-w-[190px] mr-[32px]">
+            <div className="hidden lg:flex min-w-[190px] mr-[32px]">
                 <Menu
                     onClick={handleMenuClick}
                     onOpenChange={handleMenuOpen}
@@ -93,9 +95,19 @@ const CategoryPage = (props: {
                 />
             </div>
             <div className="mt-[24px] sm:mt-[0px] flex-1 min-h-[calc(100vh-320px)]">
-                <h1 className="text-[20px] sm:text-[24px] font-bold sm:font-medium mb-[14px] sm:mb-[24px]">
-                    {category?.name || '全部'}
-                </h1>
+                <div className="flex justify-between">
+                    <h1 className="text-[20px] sm:text-[24px] font-bold sm:font-medium mb-[14px] sm:mb-[24px]">
+                        {category?.name || '全部'}
+                    </h1>
+                    <div className="hidden sm:flex lg:hidden w-100">
+                        <Dropdown menu={{ items: dropDownItems }} placement="bottom">
+                            <Button className="min-w-[280px] justify-start h-[38px]">
+                                <span className="text-[14px] text-500 mr-auto">{"分類" + (category ? '：' + category?.name : '')}</span>
+                                <DownOutlined />
+                            </Button>
+                        </Dropdown>
+                    </div>
+                </div>
                 <CardWithDisplay
                     // TODO: pass the category id to filter
                     _id={""} title={""} description={""} imageUrl={""} saveCount={0} {...card}
