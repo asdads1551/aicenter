@@ -26,14 +26,8 @@ const Navbar = () => {
   ];
 
   const tags = [
-    { name: '熱門' },
-    { name: '最新' },
-    { name: '推薦' },
-    { name: '推薦' },
-    { name: '推薦' },
-    { name: '推薦' },
-    { name: '推薦' },
-    { name: '推薦' }
+    { name: 'sample-tag' },
+    { name: 'another-tag' }
   ];
 
   return (
