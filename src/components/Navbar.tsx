@@ -25,7 +25,16 @@ const Navbar = () => {
     { href: '/filter', label: '條件篩選' },
   ];
 
-  const tags = ['熱門', '最新', '推薦', '推薦', '推薦', '推薦', '推薦', '推薦'];
+  const tags = [
+    { name: '熱門' },
+    { name: '最新' },
+    { name: '推薦' },
+    { name: '推薦' },
+    { name: '推薦' },
+    { name: '推薦' },
+    { name: '推薦' },
+    { name: '推薦' }
+  ];
 
   return (
     <>
@@ -88,7 +97,7 @@ const Navbar = () => {
                     index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {tag}
+                  {tag.name}
                 </Button>
               ))}
             </div>
