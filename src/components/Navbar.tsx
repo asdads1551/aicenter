@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='w-full overflow-hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex items-center justify-between h-16'>
             <div className='flex items-center space-x-8'>
               <div className='flex-shrink-0'>
@@ -78,7 +78,12 @@ const Navbar = () => {
           </div>
         </div>
         
+<<<<<<< HEAD
         <div className='bg-white py-2 border-t border-gray-200'>
+=======
+        {/* 标签栏 */}
+        <div className='hidden sm:flex bg-white py-2 border-t border-gray-200'>
+>>>>>>> 902b6e2924e489efd433179043e0e01fe8e6258d
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center space-x-2 overflow-x-auto'>
               {tags.map((tag, index) => (

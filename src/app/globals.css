@@ -67,3 +67,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 自定義搜索欄樣式 */
+.searchbar-custom {
+  border-radius: 8px;
+}
+
+.searchbar-custom .ant-input {
+  height: 44px;
+  font-size: 16px;
+}
+
+.searchbar-custom .ant-input-search-button {
+  height: 44px !important;
+  border-radius: 0 8px 8px 0 !important;
+  background-color: #1677ff !important;
+  border-color: #1677ff !important;
+}
+
+.searchbar-custom .ant-input-search-button:hover {
+  background-color: #4096ff !important;
+  border-color: #4096ff !important;
+}

@@ -61,9 +61,19 @@ export default function FilterPage() {
 
       {/* 卡片顯示區域 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <CardWithDisplay _id={''} title={''} description={''} imageUrl={''} saveCount={0} commentCount={0} onLoginRequired={function (): void {
-          throw new Error('Function not implemented.')
-        }} isLoggedIn={false} />
+        <CardWithDisplay 
+          _id="sample-id"
+          title="範例標題"
+          description="範例描述"
+          imageUrl="/placeholder.jpg"
+          saveCount={0}
+          commentCount={0}
+          tags={['sample-tag']} // Changed empty array to array with string
+          onLoginRequired={() => {
+            console.log('需要登入')
+          }}
+          isLoggedIn={false}
+        />
         {/* ... 更多卡片 ... */}
       </div>
     </div>

@@ -9,9 +9,9 @@ export default function HomePage() {
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = (value: string) => {
+    console.log('Searching for:', value);
     // TODO: 實作搜尋邏輯
-    console.log('Searching for:', searchTerm);
   };
 
   useEffect(() => {
@@ -35,12 +35,14 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-12">
+      <div className="mb-8">
         <div className="flex justify-center">
-          <h1 className="text-4xl font-bold text-center mb-8">A dedicated team to grow<br />your company</h1>
+          <h1 className="text-3xl font-bold text-center mb-4">
+            找出屬於自己的AI工具<br />your company
+          </h1>
         </div>
-        <div className="max-w-3xl mx-auto">
-          <SearchBar onSearch={handleSearch} />
+        <div className="max-w-xl mx-auto">
+          <SearchBar />
         </div>
       </div>
 
@@ -51,6 +53,7 @@ export default function HomePage() {
             _id={tool._id}
             title={tool.title}
             description={tool.overview}
+            tags={tool.tags}
             imageUrl={tool.imageUrl}
             saveCount={tool.favCount}
             commentCount={tool.commentCount}

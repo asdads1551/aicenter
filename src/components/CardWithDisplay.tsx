@@ -1,23 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button } from 'antd';
+import { Tag } from "antd";
 import { Heart, MessageSquare, Share2, Bookmark, X } from 'lucide-react';
 import Link from 'next/link';
 import { FacebookIcon, TwitterIcon } from 'lucide-react';
 import { LinkIcon } from 'lucide-react';
-
-interface Tool {
-  _id: string;
-  title: string;
-  imageUrl: string;
-  overview: string;
-  content: string;
-  url: string;
-  commentCount: number;
-  likeCount: number;
-}
 
 interface CardWithDisplayProps {
   _id: string;
@@ -28,6 +18,7 @@ interface CardWithDisplayProps {
   commentCount: number;
   onLoginRequired: () => void;
   isLoggedIn: boolean;
+  tags: { name: string }[];
 }
 
 interface ShareModalProps {
@@ -57,8 +48,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose }) => {
         
         {/* Content */}
         <div className="p-3 flex gap-2">
-          <Button 
-            variant="outline" 
+          <Button  
             className="flex-1 h-9 border border-gray-200 rounded-lg hover:bg-gray-50"
             onClick={copyLink}
           >
@@ -67,7 +57,6 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose }) => {
           </Button>
           
           <Button 
-            variant="outline" 
             className="h-9 px-3 border border-gray-200 rounded-lg hover:bg-gray-50"
             onClick={() => window.open('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href)}
           >
@@ -75,7 +64,6 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose }) => {
           </Button>
           
           <Button 
-            variant="outline" 
             className="h-9 px-3 border border-gray-200 rounded-lg hover:bg-gray-50"
             onClick={() => window.open('https://twitter.com/intent/tweet?url=' + window.location.href)}
           >
@@ -96,32 +84,11 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   commentCount,
   onLoginRequired,
   isLoggedIn,
+  tags
 }) => {
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [isLiked, setIsLiked] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [tools, setTools] = useState<Tool[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchTools = async () => {
-      try {
-        const response = await fetch('https://api.aicenter.tw/tool');
-        if (!response.ok) {
-          throw new Error('Failed to fetch tools');
-        }
-        const data = await response.json();
-        setTools(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTools();
-  }, []);
 
   const handleLike = () => {
     if (!isLoggedIn) {
@@ -144,6 +111,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
     }
     console.log('Save clicked');
   };
+
   const toolPath = `/tool-review?toolId=${_id}`;
 
   return (
@@ -157,16 +125,21 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
           after:rounded-b-2xl">
           <Link href={toolPath} className="block">
             <CardContent className="p-0">
-              <div className="bg-slate-100 h-36 flex items-center justify-center">
+              <div className="bg-slate-100 h-44 flex items-center justify-center">
                 <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
               </div>
-              <div className="p-3 pb-14">
-                <h3 className="text-base font-bold mb-1">{title}</h3>
-                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{description}</p>
+              <div className="p-4 pb-16">
+                <h3 className="text-base font-bold mb-2">{title}</h3>
+                <p className="text-xs text-gray-600 mb-3 line-clamp-2">{description}</p>
                 <div className="flex flex-wrap gap-1">
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">影片剪輯</Button>
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">免費</Button>
-                  <Button variant="secondary" size="sm" className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5">中文</Button>
+                  {tags?.map((tag, index) => (
+                    <Button 
+                      key={index}
+                      className="rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] px-2 h-5"
+                    >
+                      {tag.name}
+                    </Button>
+                  ))}
                 </div>
               </div>
             </CardContent>
@@ -176,8 +149,6 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
             <div className="flex items-center justify-between text-base text-gray-500 p-3">
               <div className="flex items-center space-x-4">
                 <Button 
-                  variant="ghost" 
-                  size="sm" 
                   className={`p-0 flex items-center hover:bg-transparent ${isLiked ? 'text-red-500' : 'text-gray-500'}`} 
                   onClick={handleLike}
                 >
@@ -191,16 +162,12 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
               </div>
               <div className="flex items-center space-x-3">
                 <Button 
-                  variant="ghost" 
-                  size="sm" 
                   className="p-0 hover:bg-transparent" 
                   onClick={() => setIsShareModalOpen(true)}
                 >
                   <Share2 className="w-4 h-4" />
                 </Button>
                 <Button 
-                  variant="ghost" 
-                  size="sm" 
                   className="p-0 hover:bg-transparent" 
                   onClick={handleBookmark}
                 >
@@ -211,7 +178,6 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
           </div>
         </Card>
       </div>
-      
       <ShareModal 
         isOpen={isShareModalOpen} 
         onClose={() => setIsShareModalOpen(false)} 
