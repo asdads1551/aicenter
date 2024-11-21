@@ -25,10 +25,11 @@ const Navbar = () => {
     { href: '/filter', label: '條件篩選' },
   ];
 
-  const tags = [
-    { name: 'sample-tag' },
-    { name: 'another-tag' }
-  ];
+  // 從這樣:
+const tags: string[] = ['tag1', 'tag2', 'tag3'];
+
+// 轉換成這樣:
+const tagsObjects = tags.map(tag => ({ name: tag }));
 
   return (
     <>
@@ -91,7 +92,7 @@ const Navbar = () => {
                     index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {tag.name}
+                  {tag}
                 </Button>
               ))}
             </div>
