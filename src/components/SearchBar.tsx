@@ -1,34 +1,53 @@
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import React from 'react';
+import { UserOutlined } from '@ant-design/icons';
+import { AutoComplete, Flex, Input } from 'antd';
 
-interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
-}
+const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
+  <Flex align="center" justify="space-between">
+    {props.title}
+    <a href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
+      more
+    </a>
+  </Flex>
+);
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const renderItem = (title: string, count: number) => ({
+  value: title,
+  label: (
+    <Flex align="center" justify="space-between">
+      {title}
+      <span>
+        <UserOutlined /> {count}
+      </span>
+    </Flex>
+  ),
+});
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(searchTerm);
-  };
+const options = [
+  {
+    label: <Title title="Libraries" />,
+    options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
+  },
+  {
+    label: <Title title="Solutions" />,
+    options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
+  },
+  {
+    label: <Title title="Articles" />,
+    options: [renderItem('AntDesign design language', 100000)],
+  },
+];
 
-  return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
-      <Input
-        type="text"
-        placeholder="搜索 AI 工具..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="flex-grow"
-      />
-      <Button type="submit">
-        <Search size={20} />
-      </Button>
-    </form>
-  );
-};
+const SearchBar: React.FC = () => (
+  <AutoComplete
+    popupClassName="certain-category-search-dropdown"
+    popupMatchSelectWidth={500}
+    style={{ width: 250 }}
+    options={options}
+    size="large"
+  >
+    <Input.Search size="large" placeholder="找AI工具" />
+  </AutoComplete>
+);
 
 export default SearchBar;
