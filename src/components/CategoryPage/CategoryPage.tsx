@@ -4,7 +4,6 @@ import { useTools } from "@/context/useTools";
 import { Category } from "@/type";
 import { Button, Dropdown, type MenuProps } from 'antd';
 import Menu from 'antd/es/menu';
-import card from "antd/es/card";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 import CardWithDisplay from "../CardWithDisplay";
@@ -108,7 +107,7 @@ const CategoryPage = (props: {
                         </Dropdown>
                     </div>
                 </div>
-                <div className="w-full grid sm:grid-cols-3 lg:grid-cols-4 gap-[14px] [sm:gap-[32px] lg:gap-[20px]">
+                <div className="w-full grid sm:grid-cols-3 lg:grid-cols-4 gap-[14px] sm:gap-[32px] lg:gap-[20px]">
                     {tools.map((tool) => (
                         <CardWithDisplay
                             key={tool._id}
