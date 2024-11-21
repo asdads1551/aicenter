@@ -116,7 +116,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
 
   return (
     <>
-      <div className="w-full max-w-[280px] mx-auto p-1">
+      <div className="w-full mx-auto p-1">
         <Card className="bg-white rounded-2xl overflow-hidden relative transition-all duration-300 border-none
           shadow-[0_1px_4px_rgba(0,0,0,0.02),0_8px_16px_rgba(0,0,0,0.06)]
           hover:shadow-[0_2px_8px_rgba(0,0,0,0.04),0_16px_32px_rgba(0,0,0,0.12)]

@@ -1,5 +1,6 @@
 'use client';
 import { useCategories } from "@/context/useCategories";
+import { useTools } from "@/context/useTools";
 import { Category } from "@/type";
 import { Button, Dropdown, type MenuProps } from 'antd';
 import Menu from 'antd/es/menu';
@@ -25,16 +26,15 @@ const CategoryPage = (props: {
         categoryMap,
         categoryTree
     } = useCategories();
+    const { tools } = useTools({
+        filteredCategoryId: activeCategoryId,
+    })
 
     const handleMenuClick = (e: { key: string }) => {
         router.push("/categories/" + e.key)
     }
     const handleMenuOpen = (openKeys: string[]) => {
         setOpenKeys(() => openKeys)
-    }
-
-    function handleLoginRequired(): void {
-        throw new Error("Function not implemented.");
     }
 
     const items: MenuItem[] = categoryTree.map(tree => ({
@@ -108,13 +108,22 @@ const CategoryPage = (props: {
                         </Dropdown>
                     </div>
                 </div>
-                <CardWithDisplay
-                    // TODO: pass the category id to filter
-                    _id={""} title={""} description={""} imageUrl={""} saveCount={0} {...card}
-                    commentCount={0}
-                    isLoggedIn={false}
-                    onLoginRequired={handleLoginRequired}
-                />
+                <div className="w-full grid sm:grid-cols-3 lg:grid-cols-4 gap-[14px] [sm:gap-[32px] lg:gap-[20px]">
+                    {tools.map((tool) => (
+                        <CardWithDisplay
+                            key={tool._id}
+                            _id={tool._id}
+                            title={tool.title}
+                            description={tool.overview}
+                            tags={tool.tags}
+                            imageUrl={tool.imageUrl}
+                            saveCount={tool.favCount}
+                            commentCount={tool.commentCount}
+                            onLoginRequired={() => {/* 處理登入要求 */ }}
+                            isLoggedIn={false} // 根據實際登入狀態設置
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
