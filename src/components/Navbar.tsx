@@ -66,7 +66,7 @@ const Navbar = () => {
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
               >
                 <BookmarkIcon className="h-4 w-4" />
-                我的收藏
+                我的收
               </Link>
               <Button 
                 className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
@@ -78,12 +78,7 @@ const Navbar = () => {
           </div>
         </div>
         
-<<<<<<< HEAD
-        <div className='bg-white py-2 border-t border-gray-200'>
-=======
-        {/* 标签栏 */}
         <div className='hidden sm:flex bg-white py-2 border-t border-gray-200'>
->>>>>>> 902b6e2924e489efd433179043e0e01fe8e6258d
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center space-x-2 overflow-x-auto'>
               {tags.map((tag, index) => (
