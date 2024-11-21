@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from 'antd';
 import { Search, BookmarkIcon } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Input } from "@/components/ui/input"
+import SearchBar from '@/components/SearchBar';
 import LoginModal from '@/components/LoginModal';
 
 const Navbar = () => {
@@ -15,10 +15,9 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Searching for:', searchQuery);
-    // 实现搜索逻辑
+  const handleSearch = (value: string) => {
+    console.log('Searching for:', value);
+    // TODO: 實作搜尋邏輯
   };
 
   const navItems = [
@@ -37,10 +36,10 @@ const Navbar = () => {
               <div className='flex-shrink-0'>
                 <Link href='/' className='text-black'>
                   <Image
-                    src="/aicenter-logo.png" // 请替换为实际的图片路径
+                    src="/aicenter-logo.png"
                     alt="AI Center"
-                    width={100} // 调整宽度以适应你的设计
-                    height={60} // 调整高度以适应你的设计
+                    width={100}
+                    height={60}
                     className="object-contain"
                   />
                 </Link>
@@ -56,29 +55,20 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
-              <form onSubmit={handleSearch} className='relative'>
-                <Input
-                  type="text"
-                  placeholder="輸入關鍵字"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 pr-10 rounded-full text-sm border-gray-300"
-                />
-                <Button type="submit" variant="ghost" size="icon" className="absolute right-0 top-0 h-full">
-                  <Search className="h-4 w-4 text-gray-400" />
-                </Button>
-              </form>
+              <div className='relative w-64 '>
+                <SearchBar  />
+              </div>
             </div>
             
             <div className='flex items-center space-x-4'>
               <Link 
                 href="/favorites" 
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
               >
+                <BookmarkIcon className="h-4 w-4" />
                 我的收藏
               </Link>
               <Button 
-                variant="default" 
                 className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
                 onClick={() => setIsLoginModalOpen(true)}
               >
@@ -88,14 +78,12 @@ const Navbar = () => {
           </div>
         </div>
         
-        {/* 标签栏 */}
         <div className='bg-white py-2 border-t border-gray-200'>
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center space-x-2 overflow-x-auto'>
               {tags.map((tag, index) => (
                 <Button 
                   key={index} 
-                  variant={index === 0 ? "default" : "ghost"} 
                   className={`rounded-full text-sm font-normal px-4 py-1 ${
                     index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
                   }`}
@@ -114,6 +102,6 @@ const Navbar = () => {
       />
     </>
   );
-}
+};
 
 export default Navbar;
