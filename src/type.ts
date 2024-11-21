@@ -30,3 +30,11 @@ export interface Tool {
 export interface CategoryTree extends Category {
   subCategories?: CategoryTree[];
 }
+
+export interface ToolFav {
+  _id: string;
+  userId: string;
+  toolId: string;
+  createdAt: string;
+  updatedAt: string;
+}
