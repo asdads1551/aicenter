@@ -1,7 +1,6 @@
 import { API_HOST } from "@/constant";
 import { ApiStatus } from "@/enum";
-import { Tool, User } from "@/type";
-import { useRouter } from "next/navigation";
+import { User } from "@/type";
 import { useEffect, useState } from "react";
 
 const TOKEN_KEY_IN_LOCAL_STORAGE = "_token";
@@ -23,7 +22,6 @@ export const useAuth = (): {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isShownLoginPopup, setIsShownLoginPopup] = useState<boolean>(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (!token) {
@@ -57,7 +55,7 @@ export const useAuth = (): {
       };
       fetchUser();
     }
-  }, [token]);
+  }, [token, setToken]);
 
   const doGoogleLogin = () => {
     localStorage.setItem(
@@ -72,7 +70,7 @@ export const useAuth = (): {
       localStorage.getItem(ORIGINAL_PAGE_BEFORE_LOGIN_KEY_IN_LOCAL_STORAGE) ||
       "/";
     localStorage.removeItem(ORIGINAL_PAGE_BEFORE_LOGIN_KEY_IN_LOCAL_STORAGE);
-    router.replace(url);
+    window.location.href = url;
   };
 
   return {

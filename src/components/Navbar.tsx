@@ -19,7 +19,6 @@ const Navbar = () => {
     isShownLoginPopup,
     showLoginPopup,
     hideLoginPopup,
-    state: authState,
     user,
   } = useAuth();
 
@@ -78,7 +77,7 @@ const Navbar = () => {
                 href="/favorites"
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
                 onClick={() => {
-                  if(!user) {
+                  if (!user) {
                     showLoginPopup();
                   } else {
                     router.push('/favorites');
@@ -89,7 +88,7 @@ const Navbar = () => {
                 我的收藏
               </Link>
               {
-                authState === ApiStatus.done && user ? (
+                user ? (
                   <div className='flex items-center'>
                     <Avatar src={user.avatarUrl} />
                     <p className='ml-[10px]'>
