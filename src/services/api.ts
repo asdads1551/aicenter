@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = 'https://api.aicenter.tw';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_HOST || "https://api.aicenter.tw";
 
 // 定義工具資料的介面
 export interface Tool {
@@ -31,7 +32,7 @@ export const toolsApi = {
       const response = await axios.get(`${API_BASE_URL}/tool`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching tools:', error);
+      console.error("Error fetching tools:", error);
       throw error;
     }
   },
@@ -42,8 +43,8 @@ export const toolsApi = {
       const response = await axios.get(`${API_BASE_URL}/tool/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching tool details:', error);
+      console.error("Error fetching tool details:", error);
       throw error;
     }
-  }
-}; 
+  },
+};

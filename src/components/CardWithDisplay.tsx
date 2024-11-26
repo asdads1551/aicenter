@@ -8,6 +8,8 @@ import { Heart, MessageSquare, Share2, Bookmark, X } from 'lucide-react';
 import Link from 'next/link';
 import { FacebookIcon, TwitterIcon } from 'lucide-react';
 import { LinkIcon } from 'lucide-react';
+import { useAuth } from '@/context/useAuth';
+import { API_HOST } from '@/constant';
 
 interface CardWithDisplayProps {
   _id: string;
@@ -89,13 +91,14 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [isLiked, setIsLiked] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { token, user, showLoginPopup } = useAuth()
 
   const handleLike = () => {
     if (!isLoggedIn) {
       onLoginRequired();
       return;
     }
-    
+
     if (isLiked) {
       setSaveCount(prev => prev - 1);
     } else {
@@ -104,12 +107,22 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
     setIsLiked(!isLiked);
   };
 
-  const handleBookmark = () => {
-    if (!isLoggedIn) {
-      onLoginRequired();
+  const handleBookmark = async () => {
+    if (!user) {
+      showLoginPopup();
       return;
     }
-    console.log('Save clicked');
+    const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ toolId: _id }),
+      method: 'POST'
+    });
+    const content = await res.json();
+    console.log(content);
   };
 
   const toolPath = `/tool-review?toolId=${_id}`;

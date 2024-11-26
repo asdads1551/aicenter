@@ -1,3 +1,4 @@
+import { API_HOST } from "@/constant";
 import { Category, CategoryTree } from "@/type";
 import { useEffect, useState } from "react";
 
@@ -42,7 +43,7 @@ export const useCategories = (): {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://api.aicenter.tw/category");
+      const res = await fetch(`${API_HOST}/category`);
       const categories = await res.json();
       console.debug({ categories });
       setCategories(categories);

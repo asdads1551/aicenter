@@ -1,3 +1,4 @@
+import { API_HOST } from "@/constant";
 import { ApiStatus } from "@/enum";
 import { Tool } from "@/type";
 import { useEffect, useState } from "react";
@@ -18,7 +19,7 @@ export const useTools = (
   useEffect(() => {
     (async () => {
       setState(ApiStatus.loading);
-      const res = await fetch("https://api.aicenter.tw/tool");
+      const res = await fetch(`${API_HOST}/tool`);
       const tools = await res.json();
       console.debug({ tools });
       if (filteredCategoryId) {

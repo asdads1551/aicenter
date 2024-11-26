@@ -38,3 +38,12 @@ export interface ToolFav {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface User {
+  _id: string;
+  nickname: string;
+  email: string;
+  avatarUrl: string;
+  isGithubUser: boolean;
+  isGoogleUser: boolean;
+}

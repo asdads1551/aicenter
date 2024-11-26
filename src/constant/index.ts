@@ -1,3 +1,4 @@
+export const API_HOST = process.env.NEXT_PUBLIC_API_HOST || 'https://api.aicenter.tw'
 export const NavLinks = [
     { href: '/', key: 'Inspiration', text: 'Inspiration' },
     { href: '/', key: 'Find Projects', text: 'Find Projects' },

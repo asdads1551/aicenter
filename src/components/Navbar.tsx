@@ -1,19 +1,27 @@
 'use client';
 
 import React, { useState } from 'react'
-import { Button } from 'antd';
+import { Avatar, Button } from 'antd';
 import { Search, BookmarkIcon } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from '@/components/SearchBar';
 import LoginModal from '@/components/LoginModal';
+import { useAuth } from '@/context/useAuth';
+import { ApiStatus } from '@/enum';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
   const pathname = usePathname();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const {
+    isShownLoginPopup,
+    showLoginPopup,
+    hideLoginPopup,
+    state: authState,
+    user,
+  } = useAuth();
 
   const handleSearch = (value: string) => {
     console.log('Searching for:', value);
@@ -51,9 +59,9 @@ const Navbar = () => {
               </div>
               <div className='flex space-x-6'>
                 {navItems.map((item) => (
-                  <Link 
-                    key={item.href} 
-                    href={item.href} 
+                  <Link
+                    key={item.href}
+                    href={item.href}
                     className={`text-gray-700 hover:text-gray-900 ${pathname === item.href ? 'font-semibold' : ''}`}
                   >
                     {item.label}
@@ -61,37 +69,54 @@ const Navbar = () => {
                 ))}
               </div>
               <div className='relative w-64 '>
-                <SearchBar  />
+                <SearchBar />
               </div>
             </div>
-            
-            <div className='flex items-center space-x-4'>
-              <Link 
-                href="/favorites" 
+
+            <div className='flex items-center space-x-6'>
+              <Link
+                href="/favorites"
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                onClick={() => {
+                  if(!user) {
+                    showLoginPopup();
+                  } else {
+                    router.push('/favorites');
+                  }
+                }}
               >
                 <BookmarkIcon className="h-4 w-4" />
                 我的收藏
               </Link>
-              <Button 
-                className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                登入
-              </Button>
+              {
+                authState === ApiStatus.done && user ? (
+                  <div className='flex items-center'>
+                    <Avatar src={user.avatarUrl} />
+                    <p className='ml-[10px]'>
+                      {user.nickname}
+                    </p>
+                  </div>
+                ) : (
+                  <Button
+                    className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
+                    onClick={showLoginPopup}
+                  >
+                    登入
+                  </Button>
+                )
+              }
             </div>
           </div>
         </div>
-        
+
         <div className='hidden sm:flex bg-white py-2 border-t border-gray-200'>
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center space-x-2 overflow-x-auto'>
               {tags.map((tag, index) => (
-                <Button 
-                  key={index} 
-                  className={`rounded-full text-sm font-normal px-4 py-1 ${
-                    index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                <Button
+                  key={index}
+                  className={`rounded-full text-sm font-normal px-4 py-1 ${index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
+                    }`}
                 >
                   {tag.name}
                 </Button>
@@ -101,9 +126,9 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <LoginModal 
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
+      <LoginModal
+        isOpen={isShownLoginPopup}
+        onClose={hideLoginPopup}
       />
     </>
   );

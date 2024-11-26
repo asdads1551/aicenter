@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { API_HOST } from '@/constant';
 
 interface Category {
   _id: string;
@@ -20,7 +21,7 @@ const CategorySidebar: React.FC = () => {
   React.useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://api.aicenter.tw/category');
+        const response = await fetch(`${API_HOST}/category`);
         const data = await response.json();
         const sortedData = data.sort((a: Category, b: Category) => b.ranking - a.ranking);
         setCategories(sortedData);

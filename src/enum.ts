@@ -5,5 +5,6 @@ export enum FavoritesSort {
 
 export enum ApiStatus {
   loading = 'loading',
-  done = 'done'
+  done = 'done',
+  error = 'error'
 }

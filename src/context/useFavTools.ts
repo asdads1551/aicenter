@@ -2,6 +2,8 @@ import { Tool, ToolFav } from "@/type";
 import { useEffect, useState } from "react";
 import { useTools } from "./useTools";
 import { ApiStatus, FavoritesSort } from "@/enum";
+import { API_HOST } from "@/constant";
+import { useAuth } from "./useAuth";
 
 interface UseFavToolsProps {
   filteredCategoryId?: string;
@@ -11,19 +13,26 @@ const FAKE_USER_ID = "673e0d25574ab4d42a37c1c0";
 export const useFavTools = (
   props: UseFavToolsProps
 ): {
-  state: ApiStatus,
+  state: ApiStatus;
   tools: Tool[];
 } => {
   const { tools } = useTools(props);
+  const { token, user, showLoginPopup } = useAuth();
   const [state, setState] = useState<ApiStatus>(ApiStatus.loading);
   const [favTools, setFavTools] = useState<Tool[]>([]);
 
   useEffect(() => {
-    (async () => {
+    const fetchFavTools = async () => {
+      if (!user) {
+        showLoginPopup();
+        return;
+      }
       setState(ApiStatus.loading);
-      const res = await fetch(
-        `https://api.aicenter.tw/user/${FAKE_USER_ID}/tool-fav`
-      );
+      const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const favToolRecords: ToolFav[] = await res.json();
       console.debug({ favToolRecords });
       if (tools.length > 0 && favToolRecords.length > 0) {
@@ -60,7 +69,8 @@ export const useFavTools = (
         setFavTools([]);
       }
       setState(ApiStatus.done);
-    })();
+    };
+    fetchFavTools();
   }, [tools, props.sort, props.filteredCategoryId]);
 
   console.debug("useFavTools", { favTools });
