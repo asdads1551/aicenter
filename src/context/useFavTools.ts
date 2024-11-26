@@ -23,55 +23,53 @@ export const useFavTools = (
 
   useEffect(() => {
     const fetchFavTools = async () => {
-      if (!user) {
-        showLoginPopup();
-        return;
-      }
-      setState(ApiStatus.loading);
-      const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const favToolRecords: ToolFav[] = await res.json();
-      console.debug({ favToolRecords });
-      if (tools.length > 0 && favToolRecords.length > 0) {
-        const toolMap = new Map<string, Tool>();
-        tools.forEach((tool: Tool) => {
-          toolMap.set(tool._id, tool);
+      if (user) {
+        setState(ApiStatus.loading);
+        const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        if (props.sort === FavoritesSort.savedDateDesc) {
-          setFavTools(
-            favToolRecords
-              .sort((a, b) => {
-                return (
-                  new Date(b.createdAt).getTime() -
-                  new Date(a.createdAt).getTime()
-                );
-              })
-              .map((r) => toolMap.get(r.toolId))
-              .filter((r) => r !== undefined)
-          );
+        const favToolRecords: ToolFav[] = await res.json();
+        console.debug({ favToolRecords });
+        if (tools.length > 0 && favToolRecords.length > 0) {
+          const toolMap = new Map<string, Tool>();
+          tools.forEach((tool: Tool) => {
+            toolMap.set(tool._id, tool);
+          });
+          if (props.sort === FavoritesSort.savedDateDesc) {
+            setFavTools(
+              favToolRecords
+                .sort((a, b) => {
+                  return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                  );
+                })
+                .map((r) => toolMap.get(r.toolId))
+                .filter((r) => r !== undefined)
+            );
+          } else {
+            setFavTools(
+              favToolRecords
+                .sort((a, b) => {
+                  return (
+                    new Date(a.createdAt).getTime() -
+                    new Date(b.createdAt).getTime()
+                  );
+                })
+                .map((r) => toolMap.get(r.toolId))
+                .filter((r) => r !== undefined)
+            );
+          }
         } else {
-          setFavTools(
-            favToolRecords
-              .sort((a, b) => {
-                return (
-                  new Date(a.createdAt).getTime() -
-                  new Date(b.createdAt).getTime()
-                );
-              })
-              .map((r) => toolMap.get(r.toolId))
-              .filter((r) => r !== undefined)
-          );
+          setFavTools([]);
         }
-      } else {
-        setFavTools([]);
+        setState(ApiStatus.done);
       }
-      setState(ApiStatus.done);
     };
     fetchFavTools();
-  }, [tools, props.sort, props.filteredCategoryId]);
+  }, [tools, user, props.sort, props.filteredCategoryId]);
 
   console.debug("useFavTools", { favTools });
   return {
