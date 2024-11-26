@@ -28,16 +28,16 @@ const Footer = () => {
             <div>
               <h3 className="font-semibold mb-4">關於</h3>
               <ul className="space-y-2 text-sm">
-                <li><Link href="#" className="hover:underline">關於我們</Link></li>
-                <li><Link href="#" className="hover:underline">加入我們</Link></li>
-                <li><Link href="#" className="hover:underline">意見反饋</Link></li>
+                <li><Link href="/about" className="hover:underline">關於我們</Link></li>
+                <li><Link href="/joinus" className="hover:underline">加入我們</Link></li>
+                <li><Link href="/feedback" className="hover:underline">意見反饋</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">法律文件</h3>
               <ul className="space-y-2 text-sm">
-                <li><Link href="#" className="hover:underline">使用條款</Link></li>
-                <li><Link href="#" className="hover:underline">隱私權政策</Link></li>
+                <li><Link href="/service" className="hover:underline">服務條款</Link></li>
+                <li><Link href="/privacy" className="hover:underline">隱私權政策</Link></li>
               </ul>
             </div>
           </div>

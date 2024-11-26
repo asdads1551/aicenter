@@ -25,11 +25,12 @@ const Navbar = () => {
     { href: '/filter', label: '條件篩選' },
   ];
 
-  // 從這樣:
-const tags: string[] = ['tag1', 'tag2', 'tag3'];
-
-// 轉換成這樣:
-const tagsObjects = tags.map(tag => ({ name: tag }));
+  // 直接定義為正確的格式
+  const tags = [
+    { name: 'tag1' },
+    { name: 'tag2' },
+    { name: 'tag3' }
+  ];
 
   return (
     <>
@@ -92,7 +93,7 @@ const tagsObjects = tags.map(tag => ({ name: tag }));
                     index === 0 ? 'bg-blue-500 text-white hover:bg-blue-600' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {tag}
+                  {tag.name}
                 </Button>
               ))}
             </div>
