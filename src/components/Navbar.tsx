@@ -71,7 +71,7 @@ const Navbar = () => {
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
               >
                 <BookmarkIcon className="h-4 w-4" />
-                我的收
+                我的收藏
               </Link>
               <Button 
                 className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
