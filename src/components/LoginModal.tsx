@@ -15,6 +15,7 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   const {
     doGoogleLogin,
+    doGithubLogin,
   } = useAuth();
   if (!isOpen) return null;
 
@@ -53,22 +54,23 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             用 Google 帳號登入
           </Button>
 
-          {/* <Button
+          <Button
             variant="outline"
             className="w-full flex items-center justify-center gap-3 h-12 bg-black text-white hover:bg-gray-800"
+            onClick={doGithubLogin}
           >
             <Github className="h-5 w-5" />
             用 Github 帳號登入
-          </Button> */}
+          </Button>
         </div>
 
         {/* 說明文字 */}
-        {/* <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-500">
           無法登入？請來信到{' '}
           <a href="mailto:aicenter7777@gmail.com" className="text-blue-600 hover:text-blue-500">
             1234567890@gmail.com
           </a>
-        </p> */}
+        </p>
       </div>
     </>
   );

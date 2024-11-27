@@ -16,6 +16,7 @@ export const useAuth = (): {
   token: string | null;
   setToken: (newToken: string) => void;
   doGoogleLogin: () => void;
+  doGithubLogin: () => void;
   goBackToPageBeforeLoginOrHomePage: () => void;
 } => {
   const [state, setState] = useState<ApiStatus>(ApiStatus.loading);
@@ -65,6 +66,14 @@ export const useAuth = (): {
     window.location.href = `${API_HOST}/auth/google`;
   };
 
+  const doGithubLogin = () => {
+    localStorage.setItem(
+      ORIGINAL_PAGE_BEFORE_LOGIN_KEY_IN_LOCAL_STORAGE,
+      window.location.href
+    );
+    window.location.href = `${API_HOST}/auth/github`;
+  };
+
   const goBackToPageBeforeLoginOrHomePage = () => {
     const url =
       localStorage.getItem(ORIGINAL_PAGE_BEFORE_LOGIN_KEY_IN_LOCAL_STORAGE) ||
@@ -85,6 +94,7 @@ export const useAuth = (): {
       setToken(newToken);
     },
     doGoogleLogin,
+    doGithubLogin,
     goBackToPageBeforeLoginOrHomePage,
   };
 };
