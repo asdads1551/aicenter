@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Avatar, Button } from 'antd';
-import { Search, BookmarkIcon } from 'lucide-react';
+import { Search, BookmarkIcon, Menu } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,6 +10,16 @@ import SearchBar from '@/components/SearchBar';
 import LoginModal from '@/components/LoginModal';
 import { useAuth } from '@/context/useAuth';
 import { ApiStatus } from '@/enum';
+import { Drawer } from 'antd';
+
+// 新增選單項目定義
+const menuItems = [
+  { icon: '🏠', label: '首頁', href: '/' },
+  { icon: '🔍', label: '條件篩選', href: '/filter' },
+  { icon: '📑', label: '分類', href: '/categories' },
+  { icon: '🔖', label: '我的收藏', href: '/favorites' },
+  { icon: '👤', label: '個人帳號', href: '/profile' },
+];
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,6 +31,7 @@ const Navbar = () => {
     hideLoginPopup,
     user,
   } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSearch = (value: string) => {
     console.log('Searching for:', value);
@@ -56,7 +67,7 @@ const Navbar = () => {
                   />
                 </Link>
               </div>
-              <div className='flex space-x-6'>
+              <div className='hidden md:flex space-x-6'>
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
@@ -67,12 +78,12 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
-              <div className='relative w-64 '>
+              <div className='hidden md:block relative w-64'>
                 <SearchBar />
               </div>
             </div>
 
-            <div className='flex items-center space-x-6'>
+            <div className='hidden md:flex items-center space-x-6'>
               <Link
                 href="/favorites"
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
@@ -105,10 +116,19 @@ const Navbar = () => {
                 )
               }
             </div>
+
+            <div className='md:hidden flex items-center'>
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className='text-gray-600 hover:text-gray-900'
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className='hidden sm:flex bg-white py-2 border-t border-gray-200'>
+        <div className='hidden md:flex bg-white py-2 border-t border-gray-200'>
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center space-x-2 overflow-x-auto'>
               {tags.map((tag, index) => (
@@ -124,6 +144,56 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      <Drawer
+        placement="right"
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        width={280}
+      >
+        {user && (
+          <div className="flex flex-col items-center mb-6 pt-4">
+            <Avatar 
+              src={user.avatarUrl} 
+              size={64}
+              className="mb-2"
+            />
+            <h3 className="text-lg font-medium">{user.nickname}</h3>
+            <p className="text-gray-500 text-sm">{user.email}</p>
+          </div>
+        )}
+        
+        <div className="flex flex-col space-y-4">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              onClick={() => {
+                setIsMenuOpen(false);
+                if (item.label === '我的收藏' && !user) {
+                  showLoginPopup();
+                }
+              }}
+            >
+              <span className="mr-3 text-xl">{item.icon}</span>
+              <span>{item.label}</span>
+            </Link>
+          ))}
+          
+          {!user && (
+            <Button
+              className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2"
+              onClick={() => {
+                setIsMenuOpen(false);
+                showLoginPopup();
+              }}
+            >
+              登入
+            </Button>
+          )}
+        </div>
+      </Drawer>
 
       <LoginModal
         isOpen={isShownLoginPopup}
