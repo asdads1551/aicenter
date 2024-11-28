@@ -35,9 +35,9 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-8">
+      <div className="mb-[14px] sm:mb-[24px] lg:mb-[40px]">
         <div className="flex justify-center">
-          <h1 className="text-3xl font-bold text-center mb-4">
+          <h1 className="text-[20px] sm:text-[24px] font-bold sm:font-medium text-center mb-4">
             找出屬於自己的AI工具<br />your company
           </h1>
         </div>
@@ -46,7 +46,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="w-full grid sm:grid-cols-3 lg:grid-cols-4 gap-[14px] sm:gap-[32px] lg:gap-[20px]">
         {tools.map((tool) => (
           <CardWithDisplay
             key={tool._id}
@@ -58,7 +58,7 @@ export default function HomePage() {
             saveCount={tool.favCount}
             commentCount={tool.commentCount}
             onLoginRequired={() => {/* 處理登入要求 */}}
-            isLoggedIn={false} // 根據實際登入狀態設置
+            isLoggedIn={false}
           />
         ))}
       </div>
