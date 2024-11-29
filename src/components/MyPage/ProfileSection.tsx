@@ -2,7 +2,7 @@
 import { API_HOST } from "@/constant";
 import { useAuth } from "@/context/useAuth";
 import { ApiStatus } from "@/enum";
-import { Avatar, Button, Input } from "antd";
+import { Avatar, Button, Input, message } from "antd";
 import { useState } from "react";
 
 export const ProfileSection = () => {
@@ -14,6 +14,7 @@ export const ProfileSection = () => {
     } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [newNickname, setNewNickname] = useState('');
+    const [messageApi, contextHolder] = message.useMessage();
     if (state === ApiStatus.loading) {
         return null;
     }
@@ -37,13 +38,27 @@ export const ProfileSection = () => {
             body: JSON.stringify({ nickname: newNickname }),
             method: 'PATCH'
         });
-        await res.json();
-        refreshUserInfo();
+        const result = await res.json();
+        if (result?.isSuccess) {
+            messageApi.open({
+                type: 'success',
+                content: '顯示名稱修改成功',
+            });
+        } else {
+            messageApi.open({
+                type: 'error',
+                content: '顯示名稱修改失敗',
+            });
+        }
         setIsEditing(false);
+        setTimeout(() => {
+            refreshUserInfo();
+        }, 2000)
     }
 
     return (
         <div className="flex flex-col justify-between items-center">
+            {contextHolder}
             <Avatar className="w-[64px] h-[64px]" src={user.avatarUrl} />
             <h2 className="text-[20px] lg:text-[24px] text-ellipsis line-clamp-1">{user.nickname}</h2>
             <p className="lg:text-[14px]">{user.email}</p>
