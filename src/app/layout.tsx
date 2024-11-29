@@ -6,7 +6,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";  // 確保這行正確
 import Footer from "../components/Footer";
 import { NextAuthOptions } from "next-auth"
-import { ConfigProvider } from "antd";
+import { ConfigProvider, message } from "antd";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant">
       <body className={cn(
-        "min-h-screen bg-background font-sans antialiased w-[100%]",
+        "min-h-screen bg-[#FAFBFD] font-sans antialiased w-[100%]",
         fontSans.variable
       )}>
         <ConfigProvider theme={{

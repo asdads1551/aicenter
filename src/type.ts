@@ -44,6 +44,10 @@ export interface User {
   nickname: string;
   email: string;
   avatarUrl: string;
-  isGithubUser: boolean;
-  isGoogleUser: boolean;
+}
+
+export interface UserBasicInfo {
+  _id: string;
+  nickname: string;
+  avatarUrl: string;
 }

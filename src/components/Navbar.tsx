@@ -11,6 +11,8 @@ import LoginModal from '@/components/LoginModal';
 import { useAuth } from '@/context/useAuth';
 import { ApiStatus } from '@/enum';
 import { Drawer } from 'antd';
+import { useMyPageMenu } from '@/context/useMyPageMenu';
+import { Menu as AntdMenu } from 'antd';
 
 // 新增選單項目定義
 const menuItems = [
@@ -18,7 +20,7 @@ const menuItems = [
   { icon: '🔍', label: '條件篩選', href: '/filter' },
   { icon: '📑', label: '分類', href: '/categories' },
   { icon: '🔖', label: '我的收藏', href: '/favorites' },
-  { icon: '👤', label: '個人帳號', href: '/profile' },
+  { icon: '👤', label: '個人帳號', href: '/my/profile' },
 ];
 
 const Navbar = () => {
@@ -31,6 +33,11 @@ const Navbar = () => {
     hideLoginPopup,
     user,
   } = useAuth();
+  const {
+    activeTab: myPageActiveTab,
+    handleMenuClick: handleMyPageMenuClick,
+    menuItems: myPageMenuItems,
+  } = useMyPageMenu();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSearch = (value: string) => {
@@ -100,9 +107,9 @@ const Navbar = () => {
               </Link>
               {
                 user ? (
-                  <div className='flex items-center'>
+                  <div className='flex items-center cursor-pointer' onClick={() => router.push('/my/profile')}>
                     <Avatar src={user.avatarUrl} />
-                    <p className='ml-[10px]'>
+                    <p className='ml-[10px] max-w-[200px] text-ellipsis line-clamp-1'>
                       {user.nickname}
                     </p>
                   </div>
@@ -143,6 +150,20 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        {
+          myPageActiveTab && (
+            <div className="w-full flex lg:hidden">
+              <AntdMenu
+                onClick={handleMyPageMenuClick}
+                selectedKeys={[myPageActiveTab]}
+                mode="horizontal"
+                items={myPageMenuItems}
+                className="w-full bg-while"
+              />
+            </div>
+
+          )
+        }
       </nav>
 
       <Drawer
