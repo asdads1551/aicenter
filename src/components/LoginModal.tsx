@@ -68,7 +68,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         <p className="mt-6 text-center text-sm text-gray-500">
           無法登入？請來信到{' '}
           <a href="mailto:aicenter7777@gmail.com" className="text-blue-600 hover:text-blue-500">
-            1234567890@gmail.com
+          aicenter7777@gmail.com
           </a>
         </p>
       </div>
