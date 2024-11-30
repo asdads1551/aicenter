@@ -36,7 +36,7 @@ export default function AccountLayout({
               </div>
               <div>
                 <h1 className="text-2xl font-semibold">Alice Huang</h1>
-                <p className="text-gray-600">1234567890@gmail.com</p>
+                <p className="text-gray-600">aicenter7777@gmail.com</p>
               </div>
             </div>
           </div>
