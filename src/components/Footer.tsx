@@ -49,14 +49,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 聯絡我們區塊 */}
-          <div>
-            <h3 className="font-semibold text-xl mb-6">聯絡我們</h3>
-            <ul className="space-y-4">
-              <li><Link href="/email" className="hover:underline">Email</Link></li>
-            </ul>
-          </div>
-
 
         </div>
       </div>
