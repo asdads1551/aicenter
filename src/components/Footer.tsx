@@ -44,7 +44,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-xl mb-6">法律文件</h3>
             <ul className="space-y-4">
-              <li><Link href="/terms" className="hover:underline">使用者條款</Link></li>
+              <li><Link href="/service" className="hover:underline">使用者條款</Link></li>
               <li><Link href="/privacy" className="hover:underline">隱私權政策</Link></li>
             </ul>
           </div>
@@ -53,6 +53,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-xl mb-6">聯絡我們</h3>
             <ul className="space-y-4">
+              <li><Link href="/email" className="hover:underline">Email</Link></li>
               <li><Link href="/email" className="hover:underline">Email</Link></li>
             </ul>
           </div>
