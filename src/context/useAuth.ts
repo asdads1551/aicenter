@@ -18,11 +18,15 @@ export const useAuth = (): {
   doGoogleLogin: () => void;
   doGithubLogin: () => void;
   goBackToPageBeforeLoginOrHomePage: () => void;
+  refreshUserInfo: () => void;
 } => {
   const [state, setState] = useState<ApiStatus>(ApiStatus.loading);
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isShownLoginPopup, setIsShownLoginPopup] = useState<boolean>(false);
+  const [latestRefreshInfoAt, setLatestRefreshInfoAt] = useState<number>(
+    Date.now()
+  );
 
   useEffect(() => {
     if (!token) {
@@ -56,7 +60,7 @@ export const useAuth = (): {
       };
       fetchUser();
     }
-  }, [token, setToken]);
+  }, [token, setToken, latestRefreshInfoAt]);
 
   const doGoogleLogin = () => {
     localStorage.setItem(
@@ -96,5 +100,6 @@ export const useAuth = (): {
     doGoogleLogin,
     doGithubLogin,
     goBackToPageBeforeLoginOrHomePage,
+    refreshUserInfo: () => setLatestRefreshInfoAt(Date.now()),
   };
 };

@@ -91,6 +91,7 @@ const CategoryPage = (props: {
                     openKeys={openKeys}
                     mode="inline"
                     items={items}
+                    className="bg-[#FAFBFD]"
                 />
             </div>
             <div className="mt-[24px] sm:mt-[0px] flex-1 min-h-[calc(100vh-320px)]">
