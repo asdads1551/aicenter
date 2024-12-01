@@ -1,13 +1,15 @@
 import { API_HOST } from "@/constant";
 import { ApiStatus } from "@/enum";
 import { User } from "@/type";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const TOKEN_KEY_IN_LOCAL_STORAGE = "_token";
 const ORIGINAL_PAGE_BEFORE_LOGIN_KEY_IN_LOCAL_STORAGE =
   "_originalPageBeforeLogin";
 
-export const useAuth = (): {
+export const AuthContext = createContext({} as any);
+
+export const useAuthState = (): {
   state: ApiStatus;
   user: User | null;
   isShownLoginPopup: boolean;
@@ -31,7 +33,12 @@ export const useAuth = (): {
   useEffect(() => {
     if (!token) {
       if (typeof window !== "undefined") {
-        setToken(localStorage.getItem(TOKEN_KEY_IN_LOCAL_STORAGE));
+        const existsToken = localStorage.getItem(TOKEN_KEY_IN_LOCAL_STORAGE);
+        if (existsToken) {
+          setToken(existsToken);
+        } else {
+          setState(() => ApiStatus.done);
+        }
       }
     }
     if (token) {
@@ -102,4 +109,8 @@ export const useAuth = (): {
     goBackToPageBeforeLoginOrHomePage,
     refreshUserInfo: () => setLatestRefreshInfoAt(Date.now()),
   };
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };

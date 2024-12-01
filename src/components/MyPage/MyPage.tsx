@@ -1,16 +1,17 @@
 'use client';
 import { Category } from "@/type";
-import { type MenuProps } from 'antd';
+import { Button, type MenuProps } from 'antd';
 import Menu from 'antd/es/menu';
 import { ProfileSection } from "./ProfileSection";
 import { CommentsSection } from "./CommentsSection";
 import { useMyPageMenu } from "@/context/useMyPageMenu";
+import { useAuth } from "@/context/useAuth";
+import { ApiStatus } from "@/enum";
+import { useEffect } from "react";
 
 export type CategoryPageProps = {
     categories: Category[]
 }
-
-type MenuItem = Required<MenuProps>['items'][number];
 
 enum MyPageTab {
     Profile = "profile",
@@ -18,13 +19,29 @@ enum MyPageTab {
 }
 const MyPage = () => {
     const {
+        state,
+        user,
+        showLoginPopup
+    } = useAuth();
+
+    const {
         menuItems,
         activeTab,
         handleMenuClick
     } = useMyPageMenu();
 
+    useEffect(() => {
+        if (state !== ApiStatus.loading && !user) {
+            showLoginPopup();
+        }
+    }, [state, user])
+
     if (!activeTab) {
         return;
+    }
+
+    if (state !== ApiStatus.loading && !user) {
+        return null
     }
 
     return (

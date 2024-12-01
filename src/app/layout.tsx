@@ -3,10 +3,9 @@ import { Inter as FontSans } from "next/font/google"
 import { Inter } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "./globals.css";
-import Navbar from "@/components/Navbar";  // 確保這行正確
-import Footer from "../components/Footer";
 import { NextAuthOptions } from "next-auth"
-import { ConfigProvider, message } from "antd";
+import { ConfigProvider } from "antd";
+import { Layout } from "@/components/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,11 +48,9 @@ export default function RootLayout({
             }
           }
         }}>
-          <Navbar />
-          <main className="px-[14px] sm:px-[24px] lg:px-0 max-w-7xl w-[100%] mx-auto" style={{ flexGrow: 1 }}>
+          <Layout>
             {children}
-          </main>
-          <Footer />
+          </Layout>
         </ConfigProvider>
       </body>
     </html>

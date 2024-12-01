@@ -37,6 +37,8 @@ export const useMyPageMenu = () => {
         webPathAfterMyPrefix === MyPageTab.Comments
       ) {
         setActiveTab(webPathAfterMyPrefix);
+      } else {
+        setActiveTab("");
       }
     }
   }, [pathname]);
