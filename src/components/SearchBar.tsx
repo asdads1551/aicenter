@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { AutoComplete, Flex, Input } from 'antd';
+import { API_HOST } from '@/constant';
 
 const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
   <Flex align="center" justify="space-between">
@@ -11,43 +12,55 @@ const Title: React.FC<Readonly<{ title?: string }>> = (props) => (
   </Flex>
 );
 
-const renderItem = (title: string, count: number) => ({
-  value: title,
-  label: (
-    <Flex align="center" justify="space-between">
-      {title}
-      <span>
-        <UserOutlined /> {count}
-      </span>
-    </Flex>
-  ),
-});
+const SearchBar: React.FC = () => {
+  const [options, setOptions] = useState([]);
+  const [allOptions, setAllOptions] = useState([]);
 
-const options = [
-  {
-    label: <Title title="Libraries" />,
-    options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-  },
-  {
-    label: <Title title="Solutions" />,
-    options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-  },
-  {
-    label: <Title title="Articles" />,
-    options: [renderItem('AntDesign design language', 100000)],
-  },
-];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API_HOST}/Tool`);
+        const data = await response.json();
+        const formattedOptions = data.map((item: any) => ({
+          value: item.title,
+          label: (
+            <Flex align="center" justify="space-between">
+              {item.title}
+              <span>
+                <UserOutlined /> {item.count}
+              </span>
+            </Flex>
+          ),
+        }));
+        setAllOptions(formattedOptions);
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-const SearchBar: React.FC = () => (
-  <AutoComplete
-    popupClassName="certain-category-search-dropdown"
-    popupMatchSelectWidth={500}
-    style={{ width: 250 }}
-    options={options}
-    size="large"
-  >
-    <Input.Search size="large" placeholder="找AI工具" />
-  </AutoComplete>
-);
+    fetchData();
+  }, []);
+
+  const handleSearch = (value: string) => {
+    const filteredOptions = allOptions.filter((option: { value: string }) =>
+      option.value.toLowerCase().startsWith(value.toLowerCase())
+    );
+    setOptions(filteredOptions);
+  };
+
+  return (
+    <AutoComplete
+      popupClassName="certain-category-search-dropdown"
+      popupMatchSelectWidth={500}
+      style={{ width: 250 }}
+      options={options}
+      size="large"
+      onSearch={handleSearch}
+    >
+      <Input.Search size="large" placeholder="找AI工具" />
+    </AutoComplete>
+  );
+};
 
 export default SearchBar;
