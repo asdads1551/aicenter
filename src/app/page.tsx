@@ -38,7 +38,7 @@ export default function HomePage() {
       <div className="mb-[14px] sm:mb-[24px] lg:mb-[40px]">
         <div className="flex justify-center">
           <h1 className="text-[20px] sm:text-[24px] font-bold sm:font-medium text-center mb-4">
-            找出屬於自己的AI工具<br />your company
+            找出屬於自己的AI工具<br />
           </h1>
         </div>
         <div className="max-w-xl mx-auto">
