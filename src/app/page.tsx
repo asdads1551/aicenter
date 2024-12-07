@@ -41,9 +41,6 @@ export default function HomePage() {
             找出屬於自己的AI工具<br />
           </h1>
         </div>
-        <div className="max-w-xl mx-auto">
-          <SearchBar />
-        </div>
       </div>
 
       <div className="w-full grid sm:grid-cols-3 lg:grid-cols-4 gap-[14px] sm:gap-[32px] lg:gap-[20px]">
