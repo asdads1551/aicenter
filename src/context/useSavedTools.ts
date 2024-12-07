@@ -1,17 +1,17 @@
-import { Tool, ToolFav } from "@/type";
+import { Tool, ToolSave } from "@/type";
 import { useEffect, useState } from "react";
 import { useTools } from "./useTools";
-import { ApiStatus, FavoritesSort } from "@/enum";
+import { ApiStatus, SavesSort } from "@/enum";
 import { API_HOST } from "@/constant";
 import { useAuth } from "./useAuth";
 
-interface UseFavToolsProps {
+interface UseSavedToolsProps {
   filteredCategoryId?: string;
-  sort: FavoritesSort;
+  sort: SavesSort;
 }
 const FAKE_USER_ID = "673e0d25574ab4d42a37c1c0";
-export const useFavTools = (
-  props: UseFavToolsProps
+export const useSavedTools = (
+  props: UseSavedToolsProps
 ): {
   state: ApiStatus;
   tools: Tool[];
@@ -19,27 +19,27 @@ export const useFavTools = (
   const { tools } = useTools(props);
   const { token, user, showLoginPopup } = useAuth();
   const [state, setState] = useState<ApiStatus>(ApiStatus.loading);
-  const [favTools, setFavTools] = useState<Tool[]>([]);
+  const [savedTools, setSavedTools] = useState<Tool[]>([]);
 
   useEffect(() => {
-    const fetchFavTools = async () => {
+    const fetchSavedTools = async () => {
       if (user) {
         setState(ApiStatus.loading);
-        const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
+        const res = await fetch(`${API_HOST}/user/${user._id}/tool-save`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        const favToolRecords: ToolFav[] = await res.json();
-        console.debug({ favToolRecords });
-        if (tools.length > 0 && favToolRecords.length > 0) {
+        const savedToolRecords: ToolSave[] = await res.json();
+        console.debug({ savedToolRecords });
+        if (tools.length > 0 && savedToolRecords.length > 0) {
           const toolMap = new Map<string, Tool>();
           tools.forEach((tool: Tool) => {
             toolMap.set(tool._id, tool);
           });
-          if (props.sort === FavoritesSort.savedDateDesc) {
-            setFavTools(
-              favToolRecords
+          if (props.sort === SavesSort.savedDateDesc) {
+            setSavedTools(
+              savedToolRecords
                 .sort((a, b) => {
                   return (
                     new Date(b.createdAt).getTime() -
@@ -50,8 +50,8 @@ export const useFavTools = (
                 .filter((r) => r !== undefined)
             );
           } else {
-            setFavTools(
-              favToolRecords
+            setSavedTools(
+              savedToolRecords
                 .sort((a, b) => {
                   return (
                     new Date(a.createdAt).getTime() -
@@ -63,17 +63,17 @@ export const useFavTools = (
             );
           }
         } else {
-          setFavTools([]);
+          setSavedTools([]);
         }
         setState(ApiStatus.done);
       }
     };
-    fetchFavTools();
+    fetchSavedTools();
   }, [tools, user, props.sort, props.filteredCategoryId]);
 
-  console.debug("useFavTools", { favTools });
+  console.debug("useSavedTools", { savedTools });
   return {
     state,
-    tools: favTools,
+    tools: savedTools,
   };
 };

@@ -52,7 +52,7 @@ export default function HomePage() {
             description={tool.overview}
             tags={tool.tags}
             imageUrl={tool.imageUrl}
-            saveCount={tool.favCount}
+            saveCount={tool.saveCount}
             commentCount={tool.commentCount}
             onLoginRequired={() => {/* 處理登入要求 */}}
             isLoggedIn={false}

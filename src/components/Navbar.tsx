@@ -19,7 +19,7 @@ const menuItems = [
   { icon: '🏠', label: '首頁', href: '/' },
   { icon: '🔍', label: '條件篩選', href: '/filter' },
   { icon: '📑', label: '分類', href: '/categories' },
-  { icon: '🔖', label: '我的收藏', href: '/favorites' },
+  { icon: '🔖', label: '我的收藏', href: '/saves' },
   { icon: '👤', label: '個人帳號', href: '/my/profile' },
 ];
 
@@ -92,13 +92,13 @@ const Navbar = () => {
 
             <div className='hidden md:flex items-center space-x-6'>
               <Link
-                href="/favorites"
+                href="/saves"
                 className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
                 onClick={() => {
                   if (!user) {
                     showLoginPopup();
                   } else {
-                    router.push('/favorites');
+                    router.push('/saves');
                   }
                 }}
               >

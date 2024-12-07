@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Button } from 'antd'; // Correcting the import to use 'antd' instead of '@ant-design/react'
 
-interface FavoritesFilterProps {
+interface SavesFilterProps {
   onFilterChange: (filters: FilterValues) => void;
 }
 
@@ -11,7 +11,7 @@ interface FilterValues {
   subCategory: string;
 }
 
-const FavoritesFilter: React.FC<FavoritesFilterProps> = ({ onFilterChange }) => {
+const SavesFilter: React.FC<SavesFilterProps> = ({ onFilterChange }) => {
   const [filters, setFilters] = React.useState<FilterValues>({
     period: '順序：全部',
     mainCategory: '新到舊',
@@ -35,7 +35,7 @@ const FavoritesFilter: React.FC<FavoritesFilterProps> = ({ onFilterChange }) => 
   };
 
   return (
-    <div className="favorites-filter">
+    <div className="saves-filter">
       <Select<string>
         value={filters.period}
         onChange={(value: string) => handleFilterChange('period', value)}
@@ -82,4 +82,4 @@ const FavoritesFilter: React.FC<FavoritesFilterProps> = ({ onFilterChange }) => 
   );
 };
 
-export default FavoritesFilter;
+export default SavesFilter;

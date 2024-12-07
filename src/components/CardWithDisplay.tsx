@@ -112,7 +112,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
       showLoginPopup();
       return;
     }
-    const res = await fetch(`${API_HOST}/user/${user._id}/tool-fav`, {
+    const res = await fetch(`${API_HOST}/user/${user._id}/tool-save`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

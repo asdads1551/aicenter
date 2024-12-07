@@ -17,7 +17,7 @@ export interface Tool {
   commentCount: number;
   reviewAvgRating: number;
   reviewCount: number;
-  favCount: number;
+  saveCount: number;
   likeCount: number;
   tags: { name: string }[];
   createdAt: string;

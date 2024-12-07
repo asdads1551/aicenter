@@ -1,4 +1,4 @@
-export enum FavoritesSort {
+export enum SavesSort {
   savedDateDesc = "savedDateDesc",
   savedDateAsc = "savedDateAsc",
 }

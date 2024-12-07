@@ -1,18 +1,18 @@
 'use client';
 import { useCategories } from "@/context/useCategories";
-import { useFavTools } from "@/context/useFavTools";
+import { useSavedTools } from "@/context/useSavedTools";
 import { Button, Dropdown, type MenuProps } from 'antd';
 import { useRouter, useSearchParams } from 'next/navigation'
 import CardWithDisplay from "../CardWithDisplay";
 import { DownOutlined } from '@ant-design/icons';
 import Image from 'next/image';
-import { ApiStatus, FavoritesSort } from "@/enum";
+import { ApiStatus, SavesSort } from "@/enum";
 
-const SORT_TO_NAME: Record<FavoritesSort, string> = {
-    [FavoritesSort.savedDateAsc]: "舊到新",
-    [FavoritesSort.savedDateDesc]: "新到舊",
+const SORT_TO_NAME: Record<SavesSort, string> = {
+    [SavesSort.savedDateAsc]: "舊到新",
+    [SavesSort.savedDateDesc]: "新到舊",
 }
-const FavoritesPage = () => {
+const SavesPage = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const {
@@ -20,8 +20,8 @@ const FavoritesPage = () => {
         categoryTree
     } = useCategories();
 
-    const sort = (searchParams.get('sort') || FavoritesSort.savedDateDesc) as FavoritesSort;
-    const { state, tools } = useFavTools({
+    const sort = (searchParams.get('sort') || SavesSort.savedDateDesc) as SavesSort;
+    const { state, tools } = useSavedTools({
         sort,
         filteredCategoryId: searchParams.get('categoryId') || '',
     })
@@ -30,28 +30,28 @@ const FavoritesPage = () => {
         if (!id) {
             const params = new URLSearchParams(searchParams.toString())
             params.delete(field);
-            router.push(`/favorites?${params.toString()}`)
+            router.push(`/saves?${params.toString()}`)
         } else {
             const params = new URLSearchParams(searchParams.toString())
             params.set(field, id)
-            router.push(`/favorites?${params.toString()}`)
+            router.push(`/saves?${params.toString()}`)
         }
     }
 
     const sortingDropDownItems: MenuProps['items'] = [
         {
-            key: FavoritesSort.savedDateDesc,
+            key: SavesSort.savedDateDesc,
             label: (
-                <p className={`pl-[16px] leading-[30px] text-[14px] w-full ${sort === FavoritesSort.savedDateDesc ? 'bg-[#EEF4FE]' : ''}`} onClick={() => handleMenuSelect('sort', FavoritesSort.savedDateDesc)}>
-                    {SORT_TO_NAME[FavoritesSort.savedDateDesc]}
+                <p className={`pl-[16px] leading-[30px] text-[14px] w-full ${sort === SavesSort.savedDateDesc ? 'bg-[#EEF4FE]' : ''}`} onClick={() => handleMenuSelect('sort', SavesSort.savedDateDesc)}>
+                    {SORT_TO_NAME[SavesSort.savedDateDesc]}
                 </p>
             ),
         },
         {
-            key: FavoritesSort.savedDateAsc,
+            key: SavesSort.savedDateAsc,
             label: (
-                <p className={`pl-[16px] leading-[30px] text-[14px] w-full ${sort === FavoritesSort.savedDateAsc ? 'bg-[#EEF4FE]' : ''}`} onClick={() => handleMenuSelect('sort', FavoritesSort.savedDateAsc)}>
-                    {SORT_TO_NAME[FavoritesSort.savedDateAsc]}
+                <p className={`pl-[16px] leading-[30px] text-[14px] w-full ${sort === SavesSort.savedDateAsc ? 'bg-[#EEF4FE]' : ''}`} onClick={() => handleMenuSelect('sort', SavesSort.savedDateAsc)}>
+                    {SORT_TO_NAME[SavesSort.savedDateAsc]}
                 </p>
             ),
         },
@@ -104,7 +104,7 @@ const FavoritesPage = () => {
                             </Dropdown>
                         </div>
                         <div className="sm:ml-[14px]">
-                            <Button color="default" variant="filled" size="large" onClick={() => { router.push('/favorites') }}>恢復預設</Button>
+                            <Button color="default" variant="filled" size="large" onClick={() => { router.push('/saves') }}>恢復預設</Button>
                         </div>
                     </div>
                     <div className={searchParams.get('categoryId') ? 'block' : 'hidden'}>
@@ -122,7 +122,7 @@ const FavoritesPage = () => {
                                     description={tool.overview}
                                     tags={tool.tags}
                                     imageUrl={tool.imageUrl}
-                                    saveCount={tool.favCount}
+                                    saveCount={tool.saveCount}
                                     commentCount={tool.commentCount}
                                     onLoginRequired={() => {/* 處理登入要求 */ }}
                                     isLoggedIn={false} // 根據實際登入狀態設置
@@ -143,4 +143,4 @@ const FavoritesPage = () => {
     );
 }
 
-export default FavoritesPage;
+export default SavesPage;

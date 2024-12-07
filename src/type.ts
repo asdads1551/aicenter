@@ -20,7 +20,7 @@ export interface Tool {
   commentCount: number;
   reviewAvgRating: number;
   reviewCount: number;
-  favCount: number;
+  saveCount: number;
   likeCount: number;
   tags: { name: string }[];
   createdAt: string;
@@ -31,7 +31,7 @@ export interface CategoryTree extends Category {
   subCategories?: CategoryTree[];
 }
 
-export interface ToolFav {
+export interface ToolSave {
   _id: string;
   userId: string;
   toolId: string;
