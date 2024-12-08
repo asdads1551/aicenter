@@ -93,7 +93,7 @@ export const ProfileSection = () => {
                 </div>
             </div>
             <Button 
-                danger 
+                type="primary"
                 className="mt-4"
                 onClick={handleLogout}
             >
