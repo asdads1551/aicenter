@@ -115,7 +115,7 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <Button
-                    className='bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2'
+                    className='bg-blue-500 text-white rounded-md px-4 py-2'
                     onClick={showLoginPopup}
                   >
                     登入
@@ -204,7 +204,7 @@ const Navbar = () => {
           
           {!user && (
             <Button
-              className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2"
+              className="w-full mt-4 bg-blue-500 text-white rounded-md px-4 py-2"
               onClick={() => {
                 setIsMenuOpen(false);
                 showLoginPopup();
