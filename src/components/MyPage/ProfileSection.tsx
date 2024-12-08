@@ -63,6 +63,7 @@ export const ProfileSection = () => {
         localStorage.removeItem('_token');
         setToken(null);
         router.push('/');
+        window.location.reload();
     };
 
     return (
