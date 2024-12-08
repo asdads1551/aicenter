@@ -11,8 +11,7 @@ export const ProfileSection = () => {
         state,
         user,
         token,
-        refreshUserInfo,
-        logout
+        refreshUserInfo
     } = useAuth();
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
@@ -60,7 +59,7 @@ export const ProfileSection = () => {
     }
 
     const handleLogout = () => {
-        logout();
+        localStorage.removeItem('_token');
         router.push('/');
     };
 
