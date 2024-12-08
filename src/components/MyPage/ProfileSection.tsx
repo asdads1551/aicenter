@@ -4,6 +4,7 @@ import { useAuth } from "@/context/useAuth";
 import { ApiStatus } from "@/enum";
 import { Avatar, Button, Input, message } from "antd";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 export const ProfileSection = () => {
     const {
@@ -12,6 +13,7 @@ export const ProfileSection = () => {
         token,
         refreshUserInfo
     } = useAuth();
+    const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
     const [newNickname, setNewNickname] = useState('');
     const [messageApi, contextHolder] = message.useMessage();
@@ -56,6 +58,11 @@ export const ProfileSection = () => {
         }, 2000)
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('_token');
+        router.push('/');
+    };
+
     return (
         <div className="flex flex-col justify-between items-center">
             {contextHolder}
@@ -83,6 +90,15 @@ export const ProfileSection = () => {
                     </div>
                 </div>
             </div>
+            {token && (
+                <Button 
+                    type="primary"
+                    className="mt-4 w-full max-w-[845px]"
+                    onClick={handleLogout}
+                >
+                    登出
+                </Button>
+            )}
         </div >
     );
 }
