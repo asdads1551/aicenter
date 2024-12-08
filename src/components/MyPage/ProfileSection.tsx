@@ -11,7 +11,8 @@ export const ProfileSection = () => {
         state,
         user,
         token,
-        refreshUserInfo
+        refreshUserInfo,
+        setToken
     } = useAuth();
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
@@ -60,6 +61,7 @@ export const ProfileSection = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('_token');
+        setToken(null);
         router.push('/');
     };
 
@@ -90,15 +92,13 @@ export const ProfileSection = () => {
                     </div>
                 </div>
             </div>
-            {token && (
-                <Button 
-                    type="primary"
-                    className="mt-4 w-full max-w-[845px]"
-                    onClick={handleLogout}
-                >
-                    登出
-                </Button>
-            )}
+            <Button 
+                danger 
+                className="mt-4"
+                onClick={handleLogout}
+            >
+                登出
+            </Button>
         </div >
     );
 }
