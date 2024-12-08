@@ -92,6 +92,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { token, user, showLoginPopup } = useAuth()
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleLike = () => {
     if (!isLoggedIn) {
@@ -112,17 +113,24 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
       showLoginPopup();
       return;
     }
-    const res = await fetch(`${API_HOST}/user/${user._id}/tool-save`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ toolId: _id }),
-      method: 'POST'
-    });
-    const content = await res.json();
-    console.log(content);
+    
+    try {
+      const res = await fetch(`${API_HOST}/user/${user._id}/tool-save`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ toolId: _id }),
+        method: 'POST'
+      });
+      const content = await res.json();
+      if (res.ok) {
+        setIsSaved(true);
+      }
+    } catch (error) {
+      console.error('Error saving tool:', error);
+    }
   };
 
   const toolPath = `/tool-review?toolId=${_id}`;
@@ -184,7 +192,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
                   className="p-0 hover:bg-transparent" 
                   onClick={handleBookmark}
                 >
-                  <Bookmark className="w-4 h-4" />
+                  <Bookmark className="w-4 h-4" fill={isSaved ? "white" : "none"} />
                 </Button>
               </div>
             </div>
