@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from 'antd';
 import { Tag } from "antd";
@@ -93,6 +93,30 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { token, user, showLoginPopup } = useAuth()
   const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    const checkSaveStatus = async () => {
+      if (!user || !token) return;
+      
+      try {
+        const res = await fetch(`${API_HOST}/user/${user._id}/tool-save/${_id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          method: 'GET'
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setIsSaved(data.isSaved);
+        }
+      } catch (error) {
+        console.error('Error checking save status:', error);
+      }
+    };
+
+    checkSaveStatus();
+  }, [user, token, _id]);
 
   const handleLike = () => {
     if (!isLoggedIn) {
