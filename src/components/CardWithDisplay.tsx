@@ -118,18 +118,30 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
     checkSaveStatus();
   }, [user, token, _id]);
 
-  const handleLike = () => {
-    if (!isLoggedIn) {
-      onLoginRequired();
+  const handleLike = async () => {
+    if (!user || !token) {
+      showLoginPopup();
       return;
     }
 
-    if (isLiked) {
-      setSaveCount(prev => prev - 1);
-    } else {
-      setSaveCount(prev => prev + 1);
+    try {
+      const res = await fetch(`${API_HOST}/user/${user._id}/tool-like`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ toolId: _id }),
+        method: 'POST'
+      });
+
+      if (res.ok) {
+        setIsLiked(!isLiked);
+        setSaveCount(prev => isLiked ? prev - 1 : prev + 1);
+      }
+    } catch (error) {
+      console.error('Error liking tool:', error);
     }
-    setIsLiked(!isLiked);
   };
 
   const handleBookmark = async () => {
@@ -197,7 +209,11 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
                   className={`p-0 flex items-center hover:bg-transparent ${isLiked ? 'text-red-500' : 'text-gray-500'}`} 
                   onClick={handleLike}
                 >
-                  <Heart className="w-4 h-4 mr-1" fill={isLiked ? "currentColor" : "none"} />
+                  <Heart 
+                    className="w-4 h-4 mr-1" 
+                    fill={isLiked ? "currentColor" : "none"} 
+                    stroke="currentColor"
+                  />
                   <span className="text-sm">{saveCount}</span>
                 </Button>
                 <div className="flex items-center">
