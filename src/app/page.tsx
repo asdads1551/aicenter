@@ -3,16 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { Tool, toolsApi } from '@/services/api';
 import CardWithDisplay from '@/components/CardWithDisplay';
-import SearchBar from '@/components/SearchBar';
+import { useUserActions } from '@/context/useUserActions';
 
 export default function HomePage() {
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const handleSearch = (value: string) => {
-    console.log('Searching for:', value);
-    // TODO: 實作搜尋邏輯
-  };
+  const { isToolSaved, toggleSaveTool, isToolLiked, toggleLikeTool } = useUserActions();
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -55,7 +51,11 @@ export default function HomePage() {
             saveCount={tool.saveCount}
             commentCount={tool.commentCount}
             onLoginRequired={() => {/* 處理登入要求 */}}
-            isLoggedIn={false}
+            isLoggedIn={true}
+            isSaved={isToolSaved(tool._id)}
+            onSave={() => toggleSaveTool(tool._id)}
+            isLiked={isToolLiked(tool._id)}
+            onLike={() => toggleLikeTool(tool._id)}
           />
         ))}
       </div>

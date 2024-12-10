@@ -21,6 +21,10 @@ interface CardWithDisplayProps {
   onLoginRequired: () => void;
   isLoggedIn: boolean;
   tags: { name: string }[];
+  isSaved: boolean;
+  onSave: () => Promise<void>;
+  isLiked: boolean;
+  onLike: () => Promise<void>;
 }
 
 interface ShareModalProps {
