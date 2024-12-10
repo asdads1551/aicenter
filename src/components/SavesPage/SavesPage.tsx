@@ -120,6 +120,10 @@ const SavesPage = () => {
                                     _id={tool._id}
                                     title={tool.title}
                                     description={tool.overview}
+                                    isSaved={false}
+                                    onSave={() => Promise.resolve()}
+                                    isLiked={false} 
+                                    onLike={() => Promise.resolve()}
                                     tags={tool.tags}
                                     imageUrl={tool.imageUrl}
                                     saveCount={tool.saveCount}
