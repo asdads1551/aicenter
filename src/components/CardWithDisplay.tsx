@@ -213,10 +213,14 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
                   <Share2 className="w-4 h-4" />
                 </Button>
                 <Button 
-                  className="p-0 hover:bg-transparent" 
+                  className={`p-0 hover:bg-transparent ${isSaved ? 'text-white' : 'text-gray-500'}`}
                   onClick={handleBookmark}
                 >
-                  <Bookmark className="w-4 h-4" fill={isSaved ? "white" : "none"} />
+                  <Bookmark 
+                    className="w-4 h-4" 
+                    fill={isSaved ? "currentColor" : "none"} 
+                    stroke="currentColor"
+                  />
                 </Button>
               </div>
             </div>
