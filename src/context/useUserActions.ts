@@ -103,7 +103,7 @@ export const useUserActions = () => {
   };
 
   useEffect(() => {
-    fetchUserActions();
+    void fetchUserActions();
   }, [user, token]);
 
   return {
@@ -112,6 +112,6 @@ export const useUserActions = () => {
     isToolLiked,
     toggleSaveTool,
     toggleLikeTool,
-    refreshUserActions: fetchUserActions,
+    refreshUserActions: fetchUserActions
   };
-}; 
+};
