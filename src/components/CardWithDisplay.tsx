@@ -25,6 +25,7 @@ interface CardWithDisplayProps {
   onSave: () => Promise<void>;
   isLiked: boolean;
   onLike: () => Promise<void>;
+  onClick?: () => void;
 }
 
 interface ShareModalProps {
@@ -90,7 +91,8 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
   commentCount,
   onLoginRequired,
   isLoggedIn,
-  tags
+  tags,
+  onClick
 }) => {
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [isLiked, setIsLiked] = useState(false);
@@ -184,7 +186,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
           after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 
           after:h-[4px] after:bg-gradient-to-r after:from-blue-500 after:to-blue-400 
           after:rounded-b-2xl">
-          <Link href={toolPath} className="block">
+          <Link href={toolPath} className="block" onClick={onClick}>
             <CardContent className="p-0">
               <div className="bg-slate-100 h-44 flex items-center justify-center">
                 <img src={imageUrl} alt={title} className="w-full h-full object-cover" />

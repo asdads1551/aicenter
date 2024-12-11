@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Tool, toolsApi } from '@/services/api';
 import CardWithDisplay from '@/components/CardWithDisplay';
 import { useUserActions } from '@/context/useUserActions';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
+  const router = useRouter();
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
   const { isToolSaved, toggleSaveTool, isToolLiked, toggleLikeTool } = useUserActions();
@@ -50,12 +52,13 @@ export default function HomePage() {
             imageUrl={tool.imageUrl}
             saveCount={tool.saveCount}
             commentCount={tool.commentCount}
-            onLoginRequired={() => {/* 處理登入要求 */}}
+            onLoginRequired={() => router.push('/login')}
             isLoggedIn={true}
             isSaved={isToolSaved(tool._id)}
             onSave={() => toggleSaveTool(tool._id)}
             isLiked={isToolLiked(tool._id)}
             onLike={() => toggleLikeTool(tool._id)}
+            onClick={() => router.push(`/tool/${tool._id}`)}
           />
         ))}
       </div>
