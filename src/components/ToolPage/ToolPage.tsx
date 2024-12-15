@@ -1,8 +1,73 @@
 import React from 'react';
+import { ShareAltOutlined, MoreOutlined } from '@ant-design/icons';
 
 interface ToolPageProps {
   // Add necessary props
 }
+
+const ToolCard = ({
+  image,
+  title,
+  tags,
+  views,
+  likes,
+  onShare,
+  onMore
+}: {
+  image: string;
+  title: string;
+  tags: string[];
+  views: number;
+  likes: number;
+  onShare: () => void;
+  onMore: () => void;
+}) => {
+  return (
+    <div className="bg-white rounded-lg shadow p-4">
+      <div className="relative aspect-video rounded-lg overflow-hidden mb-4">
+        <img 
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <h3 className="font-semibold text-lg">{title}</h3>
+        
+        <div className="flex gap-2">
+          {tags.map(tag => (
+            <span key={tag} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <span>{views} 觀看</span>
+            <span>{likes} 讚</span>
+          </div>
+          
+          <div className="flex gap-2">
+            <button 
+              onClick={onShare}
+              className="p-1 hover:bg-gray-100 rounded"
+            >
+              <ShareAltOutlined style={{ fontSize: '16px' }} />
+            </button>
+            <button 
+              onClick={onMore}
+              className="p-1 hover:bg-gray-100 rounded"
+            >
+              <MoreOutlined style={{ fontSize: '16px' }} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ToolPage: React.FC<ToolPageProps> = () => {
   return (
@@ -38,7 +103,7 @@ const ToolPage: React.FC<ToolPageProps> = () => {
         </div>
       </section>
 
-      {/* Product Details */}
+      {/* Tool Details */}
       <section className="product-details">
         <h2>產品介紹</h2>
         {/* Add product details content */}
