@@ -175,7 +175,7 @@ const CardWithDisplay: React.FC<CardWithDisplayProps> = ({
     }
   };
 
-  const toolPath = `/tool-review?toolId=${_id}`;
+  const toolPath = `/tool/toolId=${_id}`;
 
   return (
     <>
